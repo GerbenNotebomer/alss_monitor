@@ -321,7 +321,7 @@ function menu() {
     echo -e "${YELLOW}10)${NC} Bekijk logs (filter flutter)"
     echo -e "${YELLOW}11)${NC} Opschonen & minimaliseren (Android-only)"
     echo -e "${YELLOW}12)${NC} Devices beheren (ADB)"
-    echo -e "${YELLOW}13)${NC} README.md aanmaken, committen en pushen"
+    echo -e "${YELLOW}13)${NC} Committen en pushen naar GitHub"
     echo -e "${YELLOW}0)${NC} Exit"
     echo -ne "${CYAN}Maak je keuze: ${NC}"
 }

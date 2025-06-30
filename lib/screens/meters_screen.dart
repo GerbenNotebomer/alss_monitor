@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+
 import '../models/channel.dart';
+import 'settings_screen.dart';
 
 class MetersScreen extends StatefulWidget {
   final List<Channel> channels;
@@ -15,6 +18,28 @@ class _MetersScreenState extends State<MetersScreen> {
   bool showMPPT = true;
   bool showAccu1 = true;
   bool showAccu2 = true;
+
+  // Default waarden
+  double voltageMin = 10.7;
+  double voltageMax = 14.4;
+  double currentMin = -10;
+  double currentMax = 10;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      voltageMin = prefs.getDouble('voltageMin') ?? voltageMin;
+      voltageMax = prefs.getDouble('voltageMax') ?? voltageMax;
+      currentMin = prefs.getDouble('currentMin') ?? currentMin;
+      currentMax = prefs.getDouble('currentMax') ?? currentMax;
+    });
+  }
 
   void _toggleFilter(String type) {
     setState(() {
@@ -32,12 +57,38 @@ class _MetersScreenState extends State<MetersScreen> {
     return true;
   }
 
+  Future<void> _openSettings() async {
+    final updated = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => SettingsScreen(
+          voltageMin: voltageMin,
+          voltageMax: voltageMax,
+          currentMin: currentMin,
+          currentMax: currentMax,
+        ),
+      ),
+    );
+
+    if (updated == true) {
+      // Instellingen gewijzigd, opnieuw laden
+      _loadSettings();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final filtered = widget.channels.where((c) => _shouldShow(c.name)).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Meters")),
+      appBar: AppBar(
+        title: const Text("Meters"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: _openSettings,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
@@ -87,11 +138,28 @@ class _MetersScreenState extends State<MetersScreen> {
                         const SizedBox(height: 12),
                         if (channel.voltage != null)
                           SfRadialGauge(
-                            title: GaugeTitle(text: 'Voltage (V)'),
+                            title: const GaugeTitle(text: 'Voltage (V)'),
                             axes: [
                               RadialAxis(
-                                minimum: 0,
-                                maximum: 30,
+                                minimum: voltageMin,
+                                maximum: voltageMax,
+                                ranges: [
+                                  GaugeRange(
+                                    startValue: voltageMin,
+                                    endValue: 11.5,
+                                    color: Colors.red.shade400,
+                                  ),
+                                  GaugeRange(
+                                    startValue: 11.5,
+                                    endValue: 13.0,
+                                    color: Colors.orange.shade400,
+                                  ),
+                                  GaugeRange(
+                                    startValue: 13.0,
+                                    endValue: voltageMax,
+                                    color: Colors.green.shade400,
+                                  ),
+                                ],
                                 pointers: [
                                   NeedlePointer(value: channel.voltage!),
                                 ],
@@ -111,11 +179,33 @@ class _MetersScreenState extends State<MetersScreen> {
                         const SizedBox(height: 10),
                         if (channel.current != null)
                           SfRadialGauge(
-                            title: GaugeTitle(text: 'Stroom (A)'),
+                            title: const GaugeTitle(text: 'Stroom (A)'),
                             axes: [
                               RadialAxis(
-                                minimum: 0,
-                                maximum: 100,
+                                minimum: currentMin,
+                                maximum: currentMax,
+                                ranges: [
+                                  GaugeRange(
+                                    startValue: currentMin,
+                                    endValue: -5,
+                                    color: Colors.red.shade400,
+                                  ),
+                                  GaugeRange(
+                                    startValue: -5,
+                                    endValue: 0,
+                                    color: Colors.orange.shade400,
+                                  ),
+                                  GaugeRange(
+                                    startValue: 0,
+                                    endValue: 5,
+                                    color: Colors.green.shade400,
+                                  ),
+                                  GaugeRange(
+                                    startValue: 5,
+                                    endValue: currentMax,
+                                    color: Colors.orange.shade400,
+                                  ),
+                                ],
                                 pointers: [
                                   NeedlePointer(value: channel.current!),
                                 ],
