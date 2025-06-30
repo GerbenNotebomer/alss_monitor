@@ -1,97 +1,127 @@
 # ALSS Monitor App
 
-## Overzicht
+De ALSS Monitor App is een Flutter-applicatie voor het uitlezen van een acculaadsysteem via een lokaal access point. De app communiceert met een ESP32 die als webserver fungeert en periodiek JSON-data aanbiedt met informatie over accu’s, laadstatus, vermogens, en omgevingssensoren (temperatuur, luchtvochtigheid en luchtdruk).
 
-Deze Flutter-app visualiseert data afkomstig van een ESP32-webserver die een JSON-data streamt via een access point. De data komt van sensoren en modules zoals de INA3221 (stroom/voltage monitoring) en AHT20/BMP280 (temperatuur, vochtigheid, druk).
+## Systeemoverzicht
 
-De app haalt elke 5 seconden de nieuwste data op en toont deze in een overzichtelijk dashboard. Filters maken het mogelijk om bepaalde kanalen te verbergen of te tonen.
+### Hardwarecomponenten:
 
-## Data Format
+- ESP32 microcontroller (met WiFi access point en webserver)
+- INA3221 module: meting van spanning, stroom en vermogen per kanaal
+- AHT20 + BMP280 module: temperatuur, luchtvochtigheid en luchtdruk
 
-De ESP32 webserver levert JSON data met onder andere deze structuur:
+### Communicatie:
 
+- ESP32 draait in Access Point modus
+- JSON wordt geserveerd op: http://192.168.4.1/data.json
+
+## JSON-structuur (voorbeeld)
+
+De JSON die door de ESP32 wordt gegenereerd heeft het volgende formaat:
+
+\`\`\`json
 {
-  "channels": [
-    {
-      "name": "MPPT",
-      "current": -1.01,
-      "power": -13.34,
-      "voltage": 14.03,
-      "totalAh": -1.14,
-      "totalWh": -16.09,
-      "batteryCapacityAh": 0
-    },
-    {
-      "name": "Accu 1",
-      "current": 0.05,
-      "power": 0.69,
-      "voltage": 13.96,
-      "totalAh": 0.57,
-      "totalWh": 7.55,
-      "batteryCapacityAh": 200
-    },
-    {
-      "name": "Accu 2",
-      "current": 0,
-      "power": 0,
-      "voltage": 0,
-      "totalAh": 0,
-      "totalWh": 0,
-      "batteryCapacityAh": 72
-    },
-    {
-      "name": "AHT20/BMP280",
-      "temperatureAHT": 26.05,
-      "humidityAHT": 47.92,
-      "temperatureBMP": 26.48,
-      "pressure": 1024.58
-    }
-  ],
-  "datetime": "30/06/2025 11:32:58",
-  "dag": "Moandei",
-  "batteries": [
-    {
-      "state": 0,
-      "stateText": "Laden",
-      "stateOfCharge": 100,
-      "days": 8,
-      "hours": 16,
-      "minutes": 11
-    },
-    {
-      "state": 0,
-      "stateText": "Laden",
-      "stateOfCharge": 0,
-      "days": -1,
-      "hours": -1,
-      "minutes": -1
-    }
-  ]
+"channels": [
+{
+"name": "MPPT",
+"current": -1.01,
+"power": -13.34,
+"voltage": 14.03,
+"totalAh": -1.14,
+"totalWh": -16.09,
+"batteryCapacityAh": 0
+},
+{
+"name": "Accu 1",
+"current": 0.05,
+"power": 0.69,
+"voltage": 13.97,
+"totalAh": 0.57,
+"totalWh": 7.55,
+"batteryCapacityAh": 200
+},
+{
+"name": "Accu 2",
+"current": 0,
+"power": 0,
+"voltage": 0,
+"totalAh": 0,
+"totalWh": 0,
+"batteryCapacityAh": 72
+},
+{
+"name": "AHT20/BMP280",
+"temperatureAHT": 26.05,
+"humidityAHT": 47.92,
+"temperatureBMP": 26.49,
+"pressure": 1024.58
 }
+],
+"datetime": "30/06/2025 11:32:58",
+"dag": "Moandei",
+"batteries": [
+{
+"state": 0,
+"stateText": "Laden",
+"stateOfCharge": 100,
+"days": 8,
+"hours": 16,
+"minutes": 11
+},
+{
+"state": 0,
+"stateText": "Laden",
+"stateOfCharge": 0,
+"days": -1,
+"hours": -1,
+"minutes": -1
+}
+]
+}
+\`\`\`
 
-## Modules in de app
+## App Functionaliteit
 
-- DataService: Haalt de JSON data op van de ESP32 webserver.
-- HomeScreen: De hoofdscherm widget met filters en lijstweergave.
-- ChannelCard: Toont details van elk kanaal (spanning, stroom, vermogen, temperatuur, etc.).
-- FilterChipsRow: Biedt filters aan om kanalen te tonen/verbergen op basis van naam.
+De Flutter-app biedt:
 
-## Werking
+- Real-time uitlezing van kanaalgegevens zoals spanning, stroom, vermogen, energie (Wh/Ah)
+- Weergave van temperatuur, luchtvochtigheid en luchtdruk
+- Filterfunctie om bepaalde kanaalgroepen (MPPT / Accu 1 / Accu 2) tijdelijk te verbergen
+- Automatische update van gegevens elke 5 seconden
+- Handmatige refresh via:
+  - Pull-to-refresh
+  - Refresh-knop rechtsonder
 
-- De app initialiseert en haalt data op via DataService.
-- Elke 5 seconden wordt de data ververst via een Timer.
-- Data wordt getoond in een lijst, waarbij kanalen gefilterd kunnen worden.
-- De gebruiker kan handmatig verversen met de "refresh" knop.
+## Belangrijkste Flutter-modules
 
-## Installatie en Gebruik
+Bestand — Functie
 
-1. Clone deze repository.
-2. Open het project in je Flutter-omgeving (bijv. VS Code of Android Studio).
-3. Voer `flutter pub get` uit om dependencies te installeren.
-4. Start de app op een emulator of fysiek apparaat.
-5. Verbind met het WiFi-accesspoint van de ESP32.
-6. Geniet van realtime monitoring van je sensordata.
+lib/services/data_service.dart — Haalt JSON-data op via HTTP GET  
+lib/screens/home_screen.dart — Hoofdscherm met filters, kanaalweergave en refresh-logica  
+lib/widgets/channel_card.dart — Toont gegevens per kanaal als een kaartje  
+lib/widgets/filter_chips_row.dart — Chips om MPPT / Accu 1 / Accu 2 te filteren  
+lib/models/channel.dart — Datamodel voor kanaalgegevens
 
----
+## App installeren en starten
 
-Voor vragen of suggesties, graag een issue openen op GitHub.
+Verbind je apparaat met het access point van de ESP32
+
+Start de Flutter-app:
+
+\`\`\`
+flutter pub get
+flutter run
+\`\`\`
+
+Zorg dat het ESP32-apparaat actief is en JSON serveert op: http://192.168.4.1/data.json
+
+## Toekomstige ideeën
+
+- Grafieken tonen per kanaal (historie)
+- Beter batterijoverzicht uit batteries[]
+- Multi-language ondersteuning
+- Gebruik buiten lokaal netwerk via WiFi Client-modus
+
+## Licentie
+
+Nog niet bepaald.
