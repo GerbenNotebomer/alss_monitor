@@ -31,4 +31,17 @@ class Channel {
       pressure: (json['pressure'] as num?)?.toDouble(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      if (voltage != null) 'voltage': voltage,
+      if (current != null) 'current': current,
+      if (power != null) 'power': power,
+      if (temperatureAHT != null) 'temperatureAHT': temperatureAHT,
+      if (humidityAHT != null) 'humidityAHT': humidityAHT,
+      if (temperatureBMP != null) 'temperatureBMP': temperatureBMP,
+      if (pressure != null) 'pressure': pressure,
+    };
+  }
 }

@@ -14,4 +14,11 @@ class DataModel {
 
     return DataModel(datetime: json['datetime'] ?? '', channels: channels);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'datetime': datetime,
+      'channels': channels.map((c) => c.toJson()).toList(),
+    };
+  }
 }

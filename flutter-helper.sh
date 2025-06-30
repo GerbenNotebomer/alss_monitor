@@ -164,6 +164,31 @@ function devices_menu() {
     done
 }
 
+# Nieuwe functie voor git setup en push
+function git_setup_and_push() {
+    echo -e "${BLUE}Git configureren en pushen...${NC}"
+
+    git config --global user.name "Gerben Notebomer"
+    git config --global user.email "g.k.notebomer@.com"
+
+    # Initialiseer repository (indien nodig)
+    git init
+
+    # Voeg remote toe (doe dit alleen als nog niet gekoppeld)
+    git remote add origin https://github.com/GerbenNotebomer/alss_monitor.git 2> /dev/null
+
+    # Voeg alle bestanden toe
+    git add .
+
+    # Commit (als er wijzigingen zijn)
+    git commit -m "Eerste commit van ALSS Monitor app" || echo "Niets om te committen"
+
+    # Push naar GitHub (alleen eerste keer met -u)
+    git push -u origin master
+
+    pause
+}
+
 function menu() {
     clear
     header
@@ -179,6 +204,7 @@ function menu() {
     echo -e "${YELLOW}10)${NC} Bekijk logs (filter flutter)"
     echo -e "${YELLOW}11)${NC} Opschonen & minimaliseren (Android-only)"
     echo -e "${YELLOW}12)${NC} Devices beheren (ADB)"
+    echo -e "${YELLOW}13)${NC} Git Setup & Push"
     echo -e "${YELLOW}0)${NC} Exit"
     echo -ne "${CYAN}Maak je keuze: ${NC}"
 }
@@ -199,6 +225,7 @@ while true; do
         10) show_logs; pause ;;
         11) clean_android_only; pause ;;
         12) devices_menu ;;
+        13) git_setup_and_push ;;
         0) echo -e "${GREEN}Bye!${NC}"; exit 0 ;;
         *) echo -e "${RED}Ongeldige keuze, probeer opnieuw.${NC}"; pause ;;
     esac

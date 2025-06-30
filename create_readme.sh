@@ -1,3 +1,6 @@
+#!/bin/bash
+
+cat > README.md << 'EOF'
 # ALSS Monitor App
 
 De ALSS Monitor App is een Flutter-applicatie voor het uitlezen van een acculaadsysteem via een lokaal access point. De app communiceert met een ESP32 die als webserver fungeert en periodiek JSON-data aanbiedt met informatie over accu’s, laadstatus, vermogens, en omgevingssensoren (temperatuur, luchtvochtigheid en luchtdruk).
@@ -125,3 +128,12 @@ Zorg dat het ESP32-apparaat actief is en JSON serveert op: http://192.168.4.1/da
 ## Licentie
 
 Nog niet bepaald.
+EOF
+
+echo "README.md is aangemaakt."
+
+git add README.md
+git commit -m "Add README.md with project description"
+git push origin master
+
+echo "README.md gecommit en gepusht naar GitHub."
