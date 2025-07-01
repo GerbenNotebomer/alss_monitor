@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/meters_screen.dart';
 import 'screens/raw_json_screen.dart';
 import 'models/data_model.dart';
@@ -38,7 +38,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   String? _error;
   bool _isLoading = true;
 
-  final titles = ["Main", "Meters", "Raw JSON"];
+  final titles = ["Dashboard", "Meters", "Raw JSON"];
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.dashboard),
-              title: const Text('Main'),
+              title: const Text('Dashboard'),
               selected: _selectedIndex == 0,
               onTap: () => _onItemTapped(0),
             ),
@@ -137,7 +137,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Main'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.speed), label: 'Meters'),
           BottomNavigationBarItem(icon: Icon(Icons.code), label: 'Raw JSON'),
         ],
