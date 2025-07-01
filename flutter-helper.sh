@@ -301,7 +301,7 @@ EOF
         echo "Geen nieuwe wijzigingen om te committen."
     else
         git commit -m "Update README.md en verwijder ongewenste bestanden"
-        git push origin master
+        git push --force origin master
         echo "README.md gecommit en gepusht naar GitHub."
     fi
 }
