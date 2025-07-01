@@ -1,54 +1,21 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../services/data_service.dart';
 import '../widgets/channel_card.dart';
 import '../widgets/filter_chips_row.dart';
 import '../models/data_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final DataModel? data;
+
+  const HomeScreen({super.key, required this.data});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final DataService _dataService = DataService();
-  DataModel? data;
-  String? error;
-  Timer? _timer;
-
   bool showMPPT = true;
   bool showAccu1 = true;
   bool showAccu2 = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-    _timer = Timer.periodic(const Duration(seconds: 5), (_) => fetchData());
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  Future<void> fetchData() async {
-    try {
-      final result = await _dataService.fetchData();
-      setState(() {
-        data = result;
-        error = null;
-      });
-    } catch (e) {
-      setState(() {
-        error = e.toString();
-        data = null;
-      });
-    }
-  }
 
   void _toggleFilter(String type) {
     setState(() {
@@ -68,50 +35,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = widget.data;
+
+    if (data == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text("ALSS Monitor")),
       body: RefreshIndicator(
-        onRefresh: fetchData,
-        child: error != null
-            ? Center(child: Text("Fout: $error"))
-            : data == null
-            ? const Center(child: CircularProgressIndicator())
-            : Column(
+        onRefresh: () async {
+          // Optioneel: Je kunt hier een callback aanroepen om de data handmatig te verversen
+          // Bijvoorbeeld via een callback in de constructor
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: FilterChipsRow(
+                showMPPT: showMPPT,
+                showAccu1: showAccu1,
+                showAccu2: showAccu2,
+                onToggle: _toggleFilter,
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: FilterChipsRow(
-                      showMPPT: showMPPT,
-                      showAccu1: showAccu1,
-                      showAccu2: showAccu2,
-                      onToggle: _toggleFilter,
+                  Text(
+                    "📅 Tijd: ${data.datetime}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.all(16),
-                      children: [
-                        Text(
-                          "📅 Tijd: ${data!.datetime}",
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        ...data!.channels
-                            .where((c) => _shouldShow(c.name))
-                            .map<Widget>((c) => ChannelCard(channel: c))
-                            .toList(),
-                      ],
-                    ),
-                  ),
+                  const SizedBox(height: 16),
+                  ...data.channels
+                      .where((c) => _shouldShow(c.name))
+                      .map<Widget>((c) => ChannelCard(channel: c))
+                      .toList(),
                 ],
               ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: fetchData,
-        child: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
       ),
     );
   }

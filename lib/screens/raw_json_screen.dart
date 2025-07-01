@@ -10,12 +10,15 @@ class RawJsonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final prettyJson = const JsonEncoder.withIndent('  ').convert(jsonData);
 
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: SingleChildScrollView(
-        child: SelectableText(
-          prettyJson,
-          style: const TextStyle(fontFamily: 'monospace'),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Raw JSON View')),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: SingleChildScrollView(
+          child: SelectableText(
+            prettyJson,
+            style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
+          ),
         ),
       ),
     );

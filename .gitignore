@@ -8,3 +8,4 @@ build/
 *.log
 .flutter-plugins
 pubspec.lock
+lib/config/config.dart

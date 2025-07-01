@@ -19,7 +19,7 @@ class _MetersScreenState extends State<MetersScreen> {
   bool showAccu1 = true;
   bool showAccu2 = true;
 
-  // Default waarden
+  // Default waarden voor de meters
   double voltageMin = 10.7;
   double voltageMax = 14.4;
   double currentMin = -10;
@@ -70,7 +70,6 @@ class _MetersScreenState extends State<MetersScreen> {
     );
 
     if (updated == true) {
-      // Instellingen gewijzigd, opnieuw laden
       _loadSettings();
     }
   }
