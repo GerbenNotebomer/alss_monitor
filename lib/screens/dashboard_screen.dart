@@ -3,16 +3,16 @@ import '../widgets/channel_card.dart';
 import '../widgets/filter_chips_row.dart';
 import '../models/data_model.dart';
 
-class HomeScreen extends StatefulWidget {
+class DashboardScreen extends StatefulWidget {
   final DataModel? data;
 
-  const HomeScreen({super.key, required this.data});
+  const DashboardScreen({super.key, required this.data});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DashboardScreenState extends State<DashboardScreen> {
   bool showMPPT = true;
   bool showAccu1 = true;
   bool showAccu2 = true;

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-APP_RELEASE_APK="build/app/outputs/flutter-apk/app-release.apk"
+APK_DIR="apk"
+APP_RELEASE_APK="$APK_DIR/Alls_Monitor_APP.apk"
 APP_DEBUG_APK="build/app/outputs/flutter-apk/app-debug.apk"
 
 # Kleuren voor mooier menu
@@ -46,6 +47,20 @@ function flutter_pub_get() {
 function build_apk_release() {
     echo -e "${BLUE}Building APK (release)...${NC}"
     flutter build apk --release
+
+    # Maak apk map aan als die niet bestaat
+    if [ ! -d "$APK_DIR" ]; then
+        mkdir -p "$APK_DIR"
+    fi
+
+    # Verplaats APK en hernoem
+    SRC_APK="build/app/outputs/flutter-apk/app-release.apk"
+    if [ -f "$SRC_APK" ]; then
+        cp "$SRC_APK" "$APP_RELEASE_APK"
+        echo -e "${GREEN}APK gekopieerd naar $APP_RELEASE_APK${NC}"
+    else
+        echo -e "${RED}Release APK niet gevonden op $SRC_APK${NC}"
+    fi
 }
 
 function build_apk_debug() {
@@ -68,6 +83,7 @@ function install_apk_release() {
         echo -e "${RED}Release APK niet gevonden! Eerst bouwen (optie 3).${NC}"
         return
     fi
+    echo -e "${BLUE}Installeren van APK bestand: $APP_RELEASE_APK${NC}"   # <-- deze regel toegevoegd
     check_adb && echo -e "${BLUE}Installing release APK...${NC}" && adb install -r "$APP_RELEASE_APK"
 }
 
@@ -161,6 +177,40 @@ function devices_menu() {
                 ;;
         esac
     done
+}
+
+function upload_apk_to_sd() {
+    APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+    PRIMARY_URL="http://192.168.178.36/sd"
+    FALLBACK_URL="http://192.168.4.1/sd"
+
+    if [ ! -f "$APK_PATH" ]; then
+        echo -e "${RED}APK niet gevonden op ${APK_PATH}. Eerst een build uitvoeren.${NC}"
+        return 1
+    fi
+
+    echo -e "${BLUE}Zoeken naar actieve ESP32 SD endpoint...${NC}"
+    if curl --silent --head --fail "$PRIMARY_URL" > /dev/null; then
+        TARGET_URL="$PRIMARY_URL"
+        echo -e "${GREEN}Primaire ESP32 gevonden op $TARGET_URL${NC}"
+    elif curl --silent --head --fail "$FALLBACK_URL" > /dev/null; then
+        TARGET_URL="$FALLBACK_URL"
+        echo -e "${YELLOW}Fallback ESP32 gevonden op $TARGET_URL${NC}"
+    else
+        echo -e "${RED}Geen werkende ESP32 endpoint gevonden.${NC}"
+        return 1
+    fi
+
+    echo -e "${BLUE}Uploaden APK naar ${TARGET_URL}/upload (met redirect handling)...${NC}"
+    response_code=$(curl -L -w "%{http_code}" -o /dev/null -s \
+        -F "file=@${APK_PATH}" \
+        "${TARGET_URL}/upload")
+
+    if [[ "$response_code" == "200" ]]; then
+        echo -e "${GREEN}✅ APK succesvol geüpload naar ${TARGET_URL}${NC}"
+    else
+        echo -e "${RED}❌ Upload mislukt met HTTP statuscode: $response_code${NC}"
+    fi
 }
 
 function create_readme_and_push() {
@@ -322,6 +372,7 @@ function menu() {
     echo -e "${YELLOW}11)${NC} Opschonen & minimaliseren (Android-only)"
     echo -e "${YELLOW}12)${NC} Devices beheren (ADB)"
     echo -e "${YELLOW}13)${NC} Committen en pushen naar GitHub"
+    echo -e "${YELLOW}14)${NC} Upload APK naar SD-kaart (via WiFi)"
     echo -e "${YELLOW}0)${NC} Exit"
     echo -ne "${CYAN}Maak je keuze: ${NC}"
 }
@@ -343,9 +394,9 @@ while true; do
         11) clean_android_only; pause ;;
         12) devices_menu ;;
         13) create_readme_and_push; pause ;;
+        14) upload_apk_to_sd; pause ;;
+
         0) echo -e "${GREEN}Tot ziens!${NC}"; exit 0 ;;
         *) echo -e "${RED}Ongeldige keuze, probeer opnieuw.${NC}"; pause ;;
     esac
 done
-
-

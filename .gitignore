@@ -9,3 +9,4 @@ build/
 .flutter-plugins
 pubspec.lock
 lib/config/config.dart
+apk/
