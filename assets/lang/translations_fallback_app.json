@@ -199,14 +199,19 @@
         "en": "Error loading data",
         "de": "Fehler beim Laden der Daten"
     },
-    "root.menu": {
-        "nl": "menu",
-        "en": "menu",
-        "de": "menu"
+    "meters.filter.mppt": {
+        "nl": "MPPT",
+        "en": "MPPT",
+        "de": "MPPT"
     },
-    "nav.raw_json": {
-        "nl": "Raw JSON",
-        "en": "Raw JSON",
-        "de": "Raw JSON"
+    "meters.filter.accu2": {
+        "nl": "Accu 1",
+        "en": "Battery 1",
+        "de": "Akku 1"
+    },
+    "meters.filter.accu1": {
+        "nl": "Accu 2",
+        "en": "Battery 2",
+        "de": "Akku 2"
     }
 }

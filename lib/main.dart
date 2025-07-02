@@ -1,33 +1,73 @@
 import 'package:flutter/material.dart';
-import 'screens/dashboard_screen.dart'; // hierin zit HomeScreen
+import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/meters_screen.dart';
 import 'screens/raw_json_screen.dart';
 import 'models/data_model.dart';
 import 'services/data_service.dart';
 import 'services/data_repository.dart';
-import 'services/translations.dart'; // <-- import vertalingen
+import 'services/translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Translations.load('nl'); // Laad nl vertalingen voordat app start
-  runApp(const ALSSApp());
+
+  final prefs = await SharedPreferences.getInstance();
+  final savedLang = prefs.getString('languageCode') ?? 'nl';
+
+  await Translations.load(savedLang);
+
+  runApp(ALSSApp(initialLangCode: savedLang));
 }
 
-class ALSSApp extends StatelessWidget {
-  const ALSSApp({super.key});
+class ALSSApp extends StatefulWidget {
+  final String initialLangCode;
+  const ALSSApp({Key? key, required this.initialLangCode}) : super(key: key);
+
+  @override
+  State<ALSSApp> createState() => _ALSSAppState();
+}
+
+class _ALSSAppState extends State<ALSSApp> {
+  late String _currentLang;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLang = widget.initialLangCode;
+  }
+
+  Future<void> _changeLanguage(String newLang) async {
+    if (newLang == _currentLang) return;
+    await Translations.load(newLang);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', newLang);
+    setState(() {
+      _currentLang = newLang;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ALSS Monitor',
       theme: ThemeData(primarySwatch: Colors.teal),
-      home: const MainNavigationScreen(),
+      home: MainNavigationScreen(
+        currentLang: _currentLang,
+        onChangeLanguage: _changeLanguage,
+      ),
     );
   }
 }
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  final String currentLang;
+  final Future<void> Function(String) onChangeLanguage;
+
+  const MainNavigationScreen({
+    Key? key,
+    required this.currentLang,
+    required this.onChangeLanguage,
+  }) : super(key: key);
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -75,7 +115,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Zet hier de titels, zodat ze pas geladen worden nadat Translations klaar is
     final titles = [
       Translations.t('nav.dashboard'),
       Translations.t('nav.meters'),
@@ -138,6 +177,40 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               title: Text(Translations.t('nav.raw_json')),
               selected: _selectedIndex == 2,
               onTap: () => _onItemTapped(2),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: Text(Translations.t('instellingen.taal.label')),
+              subtitle: Text(widget.currentLang.toUpperCase()),
+              onTap: () async {
+                final selectedLang = await showDialog<String>(
+                  context: context,
+                  builder: (context) => SimpleDialog(
+                    title: Text(Translations.t('instellingen.taal.label')),
+                    children: [
+                      SimpleDialogOption(
+                        child: const Text('Nederlands'),
+                        onPressed: () => Navigator.pop(context, 'nl'),
+                      ),
+                      SimpleDialogOption(
+                        child: const Text('English'),
+                        onPressed: () => Navigator.pop(context, 'en'),
+                      ),
+                      SimpleDialogOption(
+                        child: const Text('Deutsch'),
+                        onPressed: () => Navigator.pop(context, 'de'),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (selectedLang != null &&
+                    selectedLang != widget.currentLang) {
+                  await widget.onChangeLanguage(selectedLang);
+                  Navigator.of(context).pop(); // Sluit de drawer na taal wissel
+                }
+              },
             ),
           ],
         ),
