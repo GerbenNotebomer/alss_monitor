@@ -184,31 +184,27 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               title: Text(Translations.t('instellingen.taal.label')),
               subtitle: Text(widget.currentLang.toUpperCase()),
               onTap: () async {
+                final availableLangs = Translations.getLanguageKeys();
+
                 final selectedLang = await showDialog<String>(
                   context: context,
                   builder: (context) => SimpleDialog(
                     title: Text(Translations.t('instellingen.taal.label')),
-                    children: [
-                      SimpleDialogOption(
-                        child: const Text('Nederlands'),
-                        onPressed: () => Navigator.pop(context, 'nl'),
-                      ),
-                      SimpleDialogOption(
-                        child: const Text('English'),
-                        onPressed: () => Navigator.pop(context, 'en'),
-                      ),
-                      SimpleDialogOption(
-                        child: const Text('Deutsch'),
-                        onPressed: () => Navigator.pop(context, 'de'),
-                      ),
-                    ],
+                    children: availableLangs.map((langCode) {
+                      return SimpleDialogOption(
+                        child: Text(
+                          Translations.getLanguageDisplayName(langCode),
+                        ),
+                        onPressed: () => Navigator.pop(context, langCode),
+                      );
+                    }).toList(),
                   ),
                 );
 
                 if (selectedLang != null &&
                     selectedLang != widget.currentLang) {
                   await widget.onChangeLanguage(selectedLang);
-                  Navigator.of(context).pop(); // Sluit de drawer na taal wissel
+                  Navigator.of(context).pop(); // Sluit drawer na taal wissel
                 }
               },
             ),

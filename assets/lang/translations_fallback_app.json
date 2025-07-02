@@ -1,462 +1,467 @@
 {
   "alert.fields_required": {
     "nl": "Vul alle velden in en zorg dat metingen beschikbaar zijn.",
-    "en": "Fill in all fields and ensure measurements are available.",
-    "de": "Füllen Sie alle Felder aus und stellen Sie sicher, dass Messungen verfügbar sind."
+    "fy": "Folje alle fjilden yn en soargje dat mjittingen beskikber binne.",
+    "nl-gronings": "Vul alle velden in en zorg dat de metingen bescchikbaar bint."
   },
   "algemeen.fout": {
     "nl": "Fout",
-    "en": "Error",
-    "de": "Fehler"
+    "fy": "Fout",
+    "nl-gronings": "Fout"
   },
   "algemeen.succes": {
     "nl": "Succes",
-    "en": "Success",
-    "de": "Erfolg"
+    "fy": "Sukses",
+    "nl-gronings": "Succes"
   },
   "button.annuleren": {
     "nl": "Annuleren",
-    "en": "Cancel",
-    "de": "Abbrechen"
+    "fy": "Annulearje",
+    "nl-gronings": "Afbreken"
   },
   "button.ja": {
     "nl": "Ja",
-    "en": "Yes",
-    "de": "Ja"
+    "fy": "Ja",
+    "nl-gronings": "Ja"
   },
   "button.nee": {
     "nl": "Nee",
-    "en": "No",
-    "de": "Nein"
+    "fy": "Nee",
+    "nl-gronings": "Nee"
   },
   "button.opslaan": {
     "nl": "💾 Opslaan",
-    "en": "💾 Save",
-    "de": "💾 Speichern"
+    "fy": "💾 Opslaan",
+    "nl-gronings": "💾 Opsloen"
   },
   "button.reset": {
     "nl": "🧯 Fabrieksinstellingen Herstellen",
-    "en": "🧯 Restore factory settings",
-    "de": "🧯 Werkseinstellungen wiederherstellen"
+    "fy": "🧯 Fabrieksynstellings weromsette",
+    "nl-gronings": "🧯 Fabrieksinstellings hersteld"
   },
   "button.save": {
     "nl": "Opslaan",
-    "en": "Save",
-    "de": "Speichern"
+    "fy": "Bewarje",
+    "nl-gronings": "Opslaan"
   },
   "button.sluiten": {
     "nl": "Sluiten",
-    "en": "Close",
-    "de": "Schließen"
+    "fy": "Slute",
+    "nl-gronings": "Dichtdoen"
   },
   "button.terug": {
     "nl": "Terug",
-    "en": "Back",
-    "de": "Zurück"
+    "fy": "Werom",
+    "nl-gronings": "Terug"
   },
   "button.wissen": {
     "nl": "🗑️ Wissen",
-    "en": "🗑️ Clear",
-    "de": "🗑️ Löschen"
+    "fy": "🗑️ Wiskje",
+    "nl-gronings": "🗑️ Wiesen"
   },
   "dashboard.batteries": {
     "nl": "🔋 Accu's",
-    "en": "🔋 Batteries",
-    "de": "🔋 Batterien"
+    "fy": "🔋 Batterijen",
+    "nl-gronings": "🔋 Batterien"
   },
   "dashboard.battery": {
     "nl": "Accu",
-    "en": "Battery",
-    "de": "Akku"
+    "fy": "Batterij",
+    "nl-gronings": "Batterij"
   },
   "dashboard.channel": {
     "nl": "Kanaal",
-    "en": "Channel",
-    "de": "Kanal"
+    "fy": "Kanaal",
+    "nl-gronings": "Kanaal"
   },
   "dashboard.current": {
     "nl": "⚡ Stroom (A)",
-    "en": "⚡ Current (A)",
-    "de": "⚡ Strom (A)"
+    "fy": "⚡ Stream (A)",
+    "nl-gronings": "⚡ Stroom (A)"
   },
   "dashboard.humidity_aht": {
     "nl": "Luchtvochtigheid AHT20 (%)",
-    "en": "AHT20 Humidity (%)",
-    "de": "AHT20‑Luftfeuchtigkeit (%)"
+    "fy": "Loftvochtichheid AHT20 (%)",
+    "nl-gronings": "Luchtvochtigheid AHT20 (%)"
   },
   "dashboard.loading": {
     "nl": "Laden...",
-    "en": "Loading...",
-    "de": "Lädt…"
+    "fy": "Laden…",
+    "nl-gronings": "Bezig met laden..."
   },
   "dashboard.no_battery": {
     "nl": "Geen batterijgegevens beschikbaar",
-    "en": "No battery data available",
-    "de": "Keine Batteriedaten verfügbar"
+    "fy": "Gjin batterijgegevens beskikber",
+    "nl-gronings": "Naait batterijdata beskikbaar"
   },
   "dashboard.no_sensor": {
     "nl": "Sensor data niet beschikbaar",
-    "en": "Sensor data not available",
-    "de": "Sensordaten nicht verfügbar"
+    "fy": "Sensordata net beskikber",
+    "nl-gronings": "Sensor data neet bescchikbaar"
   },
   "dashboard.power": {
     "nl": "💡 Vermogen (W)",
-    "en": "💡 Power (W)",
-    "de": "💡 Leistung (W)"
+    "fy": "💡 Krêft (W)",
+    "nl-gronings": "💡 Vermogen (W)"
   },
   "dashboard.pressure": {
     "nl": "Druk (hPa)",
-    "en": "Pressure (hPa)",
-    "de": "Druck (hPa)"
+    "fy": "Druk (hPa)",
+    "nl-gronings": "Druk (hPa)"
   },
   "dashboard.raw_pressure": {
     "nl": "Ruwe druk",
-    "en": "Raw pressure",
-    "de": "Rohdruck"
+    "fy": "Rauwe druk",
+    "nl-gronings": "Rauwe druk"
   },
   "dashboard.remaining_time": {
     "nl": "Resterende tijd",
-    "en": "Remaining time",
-    "de": "Verbleibende Zeit"
+    "fy": "Resterjende tiid",
+    "nl-gronings": "Resterende tied"
   },
   "dashboard.sea_pressure": {
     "nl": "Sealevel druk",
-    "en": "Sea-level pressure",
-    "de": "Meereshöhenluftdruck"
+    "fy": "Seenivo druk",
+    "nl-gronings": "Zielnivo druk"
   },
   "dashboard.sensors": {
     "nl": "🌡️ AHT20 & BMP280 Sensoren",
-    "en": "🌡️ AHT20 & BMP280 Sensors",
-    "de": "🌡️ AHT20‑ & BMP280‑Sensoren"
+    "fy": "🌡️ AHT20 & BMP280‑sensors",
+    "nl-gronings": "🌡️ AHT20 & BMP280 Sensoren"
   },
   "dashboard.soc": {
     "nl": "SoC (%)",
-    "en": "SoC (%)",
-    "de": "SoC (%)"
+    "fy": "SoC (%)",
+    "nl-gronings": "SoC (%)"
   },
   "dashboard.status": {
     "nl": "Status",
-    "en": "Status",
-    "de": "Status"
+    "fy": "Status",
+    "nl-gronings": "Status"
   },
   "dashboard.temperature_aht": {
     "nl": "Temperatuur AHT20 (°C)",
-    "en": "AHT20 Temperature (°C)",
-    "de": "AHT20‑Temperatur (°C)"
+    "fy": "Temperatuer AHT20 (°C)",
+    "nl-gronings": "Temperatuur AHT20 (°C)"
   },
   "dashboard.temperature_bmp": {
     "nl": "Temperatuur BMP280 (°C)",
-    "en": "BMP280 Temperature (°C)",
-    "de": "BMP280‑Temperatur (°C)"
+    "fy": "Temperatuer BMP280 (°C)",
+    "nl-gronings": "Temperatuur BMP280 (°C)"
   },
   "dashboard.title": {
     "nl": "Dashboard INA3221",
-    "en": "INA3221 Dashboard",
-    "de": "INA3221-Dashboard"
+    "fy": "Dashboard INA3221",
+    "nl-gronings": "Dashboard INA3221"
   },
   "dashboard.voltage": {
     "nl": "🔌 Spanning (V)",
-    "en": "🔌 Voltage (V)",
-    "de": "🔌 Spannung (V)"
+    "fy": "🔌 Spanning (V)",
+    "nl-gronings": "🔌 Spanning (V)"
   },
   "instellingen.taal.label": {
     "nl": "Taal",
-    "en": "Language",
-    "de": "Sprach"
+    "fy": "Taal",
+    "nl-gronings": "Toal"
   },
   "instellingen.taal.legend": {
     "nl": "🌐 Taalinstelling",
-    "en": "🌐 Language setting",
-    "de": "🌐 Spracheinstellung"
+    "fy": "🌐 Taalynstellings",
+    "nl-gronings": "🌐 Toalinstelling"
   },
   "nav.calibratie": {
     "nl": "⚙️ Kalibratie",
-    "en": "⚙️ Calibration",
-    "de": "⚙️ Kalibrierung"
+    "fy": "⚙️ Kalibraasje",
+    "nl-gronings": "⚙️ Kalibratie"
   },
   "nav.dashboard": {
     "nl": "📈 Overzicht",
-    "en": "📈 Overview",
-    "de": "📈 Übersicht"
+    "fy": "📈 Oersjoch",
+    "nl-gronings": "📈 Oversicht"
   },
   "nav.meters": {
     "nl": "⏱️ Meters",
-    "en": "⏱️ Meters",
-    "de": "⏱️ Messgeräte"
+    "fy": "⏱️ Meters",
+    "nl-gronings": "⏱️ Meters"
   },
   "root.connect_dashboard": {
     "nl": "Verbinden & Dashboard",
-    "en": "Connection & Dashboard",
-    "de": "Verbindung & Dashboard"
+    "fy": "Ferbining & Dashboard",
+    "nl-gronings": "Verbinnen & Dashboard"
   },
   "root.open_dashboard_wifi": {
     "nl": "Open Dashboard via Wi-Fi",
-    "en": "Open Dashboard via Wi‑Fi",
-    "de": "Dashboard über Wi‑Fi öffnen"
+    "fy": "Iepen Dashboard fia Wi‑Fi",
+    "nl-gronings": "Open Dashboard deur Wi-Fi"
   },
   "taal.duits": {
     "nl": "Duits",
-    "en": "German",
-    "de": "Deutsch"
+    "fy": "Dútsk",
+    "nl-gronings": "Duits"
   },
   "taal.engels": {
     "nl": "English",
-    "en": "English",
-    "de": "Englisch"
+    "fy": "Ingelsk",
+    "nl-gronings": "Engels"
   },
   "taal.frans": {
     "nl": "Frans",
-    "en": "Frans",
-    "de": "Frans"
+    "fy": "Frans",
+    "nl-gronings": "Frans"
   },
   "taal.fries": {
     "nl": "Fries",
-    "en": "Frisian",
-    "de": "Friesisch"
+    "fy": "Frysk",
+    "nl-gronings": "Frysk"
   },
   "taal.gronings": {
     "nl": "Gronings",
-    "en": "Gronings",
-    "de": "Gronings"
+    "fy": "Gronings",
+    "nl-gronings": "Grunnegs"
   },
   "taal.nederlands": {
     "nl": "Nederlands",
-    "en": "Dutch",
-    "de": "Niederländisch"
+    "fy": "Nederlânsk",
+    "nl-gronings": "Nedersaksiesch"
   },
   "taal.Nedersaksisch": {
     "nl": "Nedersaksisch",
-    "en": "Nedersaksisch",
-    "de": "Nedersaksisch"
+    "fy": "Nedersaksisch",
+    "nl-gronings": "Nedersaksisch"
   },
   "taal.Portugees": {
     "nl": "Portugees",
-    "en": "Portuguese",
-    "de": "Portugiesisch"
+    "fy": "Portugeesk",
+    "nl-gronings": "Portugees"
   },
   "dashboard.state.charging": {
     "nl": "Bezig met opladen",
-    "en": "Charging",
-    "de": "Am Laden"
+    "fy": "Bezig mei opladen",
+    "nl-gronings": "Bezig met opladen"
   },
   "dashboard.state.full": {
     "nl": "Volledig geladen",
-    "en": "Fully charged",
-    "de": "Vollständig geladen"
+    "fy": "Folledig laden",
+    "nl-gronings": "Helemoal opgeladen"
   },
   "dashboard.state.discharging": {
     "nl": "Ontladen",
-    "en": "Discharging",
-    "de": "Entladen"
+    "fy": "Loslitte",
+    "nl-gronings": "Ontlading"
   },
   "dashboard.state.idle": {
     "nl": "In rust",
-    "en": "Idle",
-    "de": "Im Leerlauf"
+    "fy": "Yn rêst",
+    "nl-gronings": "In rust"
   },
   "dashboard.state.unknown": {
     "nl": "Onbekend",
-    "en": "Unknown",
-    "de": "Unbekannt"
+    "fy": "Unbekend",
+    "nl-gronings": "Onbekend"
   },
   "dashboard.fetch_error": {
     "nl": "Fout bij laden gegevens",
-    "en": "Error loading data",
-    "de": "Fehler beim Laden der Daten"
+    "fy": "Fout by it laden fan gegevens",
+    "nl-gronings": "Fout met laden van gegevens"
   },
   "meters.filter.mppt": {
     "nl": "MPPT",
-    "en": "MPPT",
-    "de": "MPPT"
+    "fy": "MPPT",
+    "nl-gronings": "MPPT"
   },
   "meters.filter.accu2": {
     "nl": "Accu 1",
-    "en": "Battery 1",
-    "de": "Akku 1"
+    "fy": "Batterij 1",
+    "nl-gronings": "Batterij 1"
   },
   "meters.filter.accu1": {
     "nl": "Accu 2",
-    "en": "Battery 2",
-    "de": "Akku 2"
+    "fy": "Batterij 2",
+    "nl-gronings": "Batterij 2"
   },
   "button.ok": {
     "nl": "Ok",
-    "en": "Ok",
-    "de": "Ok"
+    "fy": "Ok",
+    "nl-gronings": "Ok"
   },
   "button.cancel": {
     "nl": "Annuleren",
-    "en": "Cancel",
-    "de": "Abbrechen"
+    "fy": "Annulearje",
+    "nl-gronings": "Afbreken"
   },
   "button.close": {
     "nl": "Sluiten",
-    "en": "Close",
-    "de": "Schließen"
+    "fy": "Slute",
+    "nl-gronings": "Dichtdoen"
   },
   "button.back": {
     "nl": "Terug",
-    "en": "Back",
-    "de": "Zurück"
+    "fy": "Werom",
+    "nl-gronings": "Terug"
   },
   "button.next": {
     "nl": "Volgende",
-    "en": "Next",
-    "de": "Nächste"
+    "fy": "Folgjende",
+    "nl-gronings": "Folgje"
   },
   "button.previous": {
     "nl": "Vorige",
-    "en": "Previous",
-    "de": "Vorherige"
+    "fy": "Foarige",
+    "nl-gronings": "Veerige"
   },
   "button.submit": {
     "nl": "Verzenden",
-    "en": "Submit",
-    "de": "Einreichen"
+    "fy": "Ynformearje",
+    "nl-gronings": "Indienen"
   },
   "button.retry": {
     "nl": "Opnieuw proberen",
-    "en": "Retry",
-    "de": "Erneut versuchen"
+    "fy": "Op 'e nij besykje",
+    "nl-gronings": "Opnieuw proberen"
   },
   "button.yes": {
     "nl": "Ja",
-    "en": "Yes",
-    "de": "Ja"
+    "fy": "Ja",
+    "nl-gronings": "Ja"
   },
   "button.no": {
     "nl": "Nee",
-    "en": "No",
-    "de": "Nein"
+    "fy": "Nee",
+    "nl-gronings": "Nee"
   },
   "message.loading": {
     "nl": "Laden...",
-    "en": "Loading...",
-    "de": "Lädt..."
+    "fy": "Laden...",
+    "nl-gronings": "Laden..."
   },
   "message.error": {
     "nl": "Er is een fout opgetreden",
-    "en": "An error occurred",
-    "de": "Es ist ein Fehler aufgetreten"
+    "fy": "Der is in fout optrêde",
+    "nl-gronings": "In fout optraden"
   },
   "message.success": {
     "nl": "Actie gelukt",
-    "en": "Action successful",
-    "de": "Aktion erfolgreich"
+    "fy": "Akse slagge",
+    "nl-gronings": "Actie gelukt"
   },
   "message.confirm": {
     "nl": "Weet je het zeker?",
-    "en": "Are you sure?",
-    "de": "Sind Sie sicher?"
+    "fy": "Bist du sicher?",
+    "nl-gronings": "Weet je het zeker?"
   },
   "message.saved": {
     "nl": "Opgeslagen",
-    "en": "Saved",
-    "de": "Gespeichert"
+    "fy": "Opslein",
+    "nl-gronings": "Opgeslaan"
   },
   "message.deleted": {
     "nl": "Verwijderd",
-    "en": "Deleted",
-    "de": "Gelöscht"
+    "fy": "Verwiderd",
+    "nl-gronings": "Verwijderd"
   },
   "label.username": {
     "nl": "Gebruikersnaam",
-    "en": "Username",
-    "de": "Benutzername"
+    "fy": "Gebrûkersnamme",
+    "nl-gronings": "Gebruikersnaam"
   },
   "label.password": {
     "nl": "Wachtwoord",
-    "en": "Password",
-    "de": "Passwort"
+    "fy": "Wachtwurd",
+    "nl-gronings": "Wachtwoord"
   },
   "label.email": {
     "nl": "E-mailadres",
-    "en": "Email-Adresse",
-    "de": "Email"
+    "fy": "E-mailadres",
+    "nl-gronings": "E-mailadres"
   },
   "label.search": {
     "nl": "Zoeken",
-    "en": "Search",
-    "de": "Suchen"
+    "fy": "Sykje",
+    "nl-gronings": "Zoeken"
   },
   "label.settings": {
     "nl": "Instellingen",
-    "en": "Settings",
-    "de": "Einstellungen"
+    "fy": "Ynstellings",
+    "nl-gronings": "Instellingen"
   },
   "nav.home": {
     "nl": "Home",
-    "en": "Home",
-    "de": "Startseite"
+    "fy": "Thús",
+    "nl-gronings": "Home"
   },
   "nav.settings": {
     "nl": "Instellingen",
-    "en": "Settings",
-    "de": "Einstellungen"
+    "fy": "Ynstellings",
+    "nl-gronings": "Instellingen"
   },
   "nav.profile": {
     "nl": "Profiel",
-    "en": "Profile",
-    "de": "Profil"
+    "fy": "Profyl",
+    "nl-gronings": "Profiel"
   },
   "nav.logout": {
     "nl": "Uitloggen",
-    "en": "Logout",
-    "de": "Abmelden"
+    "fy": "Utlogge",
+    "nl-gronings": "Uitloggen"
   },
   "error.network": {
     "nl": "Netwerkfout",
-    "en": "Network error",
-    "de": "Netzwerkfehler"
+    "fy": "Netwurkflater",
+    "nl-gronings": "Netwerkfout"
   },
   "error.timeout": {
     "nl": "Tijd is verstreken",
-    "en": "Timeout",
-    "de": "Zeitüberschreitung"
+    "fy": "Tiid is ferrûn",
+    "nl-gronings": "Tijd is verstreken"
   },
   "error.unauthorized": {
     "nl": "Niet gemachtigd",
-    "en": "Unauthorized",
-    "de": "Unbefugt"
+    "fy": "Niet machtige",
+    "nl-gronings": "Niet gemachtigd"
   },
   "settings.title": {
     "nl": "Instellingen",
-    "en": "Settings",
-    "de": "Einstellungen"
+    "fy": "Ynstellingen",
+    "nl-gronings": "Instellingen"
   },
   "settings.voltage_min": {
     "nl": "Voltage Min",
-    "en": "Voltage Min",
-    "de": "Spannung Min"
+    "fy": "Voltage Min",
+    "nl-gronings": "Voltage Min"
   },
   "settings.voltage_max": {
     "nl": "Voltage Max",
-    "en": "Voltage Max",
-    "de": "Spannung Max"
+    "fy": "Voltage Max",
+    "nl-gronings": "Voltage Max"
   },
   "settings.current_min": {
     "nl": "Stroom Min",
-    "en": "Current Min",
-    "de": "Strom Min"
+    "fy": "Stroom Min",
+    "nl-gronings": "Stroom Min"
   },
   "settings.current_max": {
     "nl": "Stroom Max",
-    "en": "Current Max",
-    "de": "Strom Max"
+    "fy": "Stroom Max",
+    "nl-gronings": "Stroom Max"
   },
   "message.enter_valid_numbers": {
     "nl": "Voer geldige getallen in",
-    "en": "Please enter valid numbers",
-    "de": "Bitte gültige Zahlen eingeben"
+    "fy": "Jou jilde sifers yn",
+    "nl-gronings": "Vul geldige getallen in"
   },
   "settings.voltage_group_title": {
     "nl": "Volt meter",
-    "en": "Voltage meter",
-    "de": "Spannungsmesser"
+    "fy": "Voltmeeter",
+    "nl-gronings": "Voltmeeter"
   },
   "settings.current_group_title": {
     "nl": "Stroom meter",
-    "en": "Current meter",
-    "de": "Strommesser"
+    "fy": "Stroommeter",
+    "nl-gronings": "Stroommeter"
+  },
+  "taal.keuze": {
+    "nl": "Nederlands",
+    "fy": "Fries",
+    "nl-gronings": "Gronings"
   }
 }
