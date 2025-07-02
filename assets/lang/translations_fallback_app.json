@@ -1,0 +1,212 @@
+{
+    "dashboard.batteries": {
+        "nl": "🔋 Accu's",
+        "en": "🔋 Batteries",
+        "de": "🔋 Batterien"
+    },
+    "dashboard.battery": {
+        "nl": "Accu",
+        "en": "Battery",
+        "de": "Akku"
+    },
+    "dashboard.channel": {
+        "nl": "Kanaal",
+        "en": "Channel",
+        "de": "Kanal"
+    },
+    "dashboard.current": {
+        "nl": "⚡ Stroom (A)",
+        "en": "⚡ Current (A)",
+        "de": "⚡ Strom (A)"
+    },
+    "dashboard.humidity_aht": {
+        "nl": "Luchtvochtigheid AHT20 (%)",
+        "en": "AHT20 Humidity (%)",
+        "de": "AHT20‑Luftfeuchtigkeit (%)"
+    },
+    "dashboard.loading": {
+        "nl": "Laden...",
+        "en": "Loading...",
+        "de": "Lädt…"
+    },
+    "dashboard.no_battery": {
+        "nl": "Geen batterijgegevens beschikbaar",
+        "en": "No battery data available",
+        "de": "Keine Batteriedaten verfügbar"
+    },
+    "dashboard.no_sensor": {
+        "nl": "Sensor data niet beschikbaar",
+        "en": "Sensor data not available",
+        "de": "Sensordaten nicht verfügbar"
+    },
+    "dashboard.power": {
+        "nl": "💡 Vermogen (W)",
+        "en": "💡 Power (W)",
+        "de": "💡 Leistung (W)"
+    },
+    "dashboard.pressure": {
+        "nl": "Druk (hPa)",
+        "en": "Pressure (hPa)",
+        "de": "Druck (hPa)"
+    },
+    "dashboard.raw_pressure": {
+        "nl": "Ruwe druk",
+        "en": "Raw pressure",
+        "de": "Rohdruck"
+    },
+    "dashboard.remaining_time": {
+        "nl": "Resterende tijd",
+        "en": "Remaining time",
+        "de": "Verbleibende Zeit"
+    },
+    "dashboard.sea_pressure": {
+        "nl": "Sealevel druk",
+        "en": "Sea-level pressure",
+        "de": "Meereshöhenluftdruck"
+    },
+    "dashboard.sensors": {
+        "nl": "🌡️ AHT20 & BMP280 Sensoren",
+        "en": "🌡️ AHT20 & BMP280 Sensors",
+        "de": "🌡️ AHT20‑ & BMP280‑Sensoren"
+    },
+    "dashboard.soc": {
+        "nl": "SoC (%)",
+        "en": "SoC (%)",
+        "de": "SoC (%)"
+    },
+    "dashboard.status": {
+        "nl": "Status",
+        "en": "Status",
+        "de": "Status"
+    },
+    "dashboard.temperature_aht": {
+        "nl": "Temperatuur AHT20 (°C)",
+        "en": "AHT20 Temperature (°C)",
+        "de": "AHT20‑Temperatur (°C)"
+    },
+    "dashboard.temperature_bmp": {
+        "nl": "Temperatuur BMP280 (°C)",
+        "en": "BMP280 Temperature (°C)",
+        "de": "BMP280‑Temperatur (°C)"
+    },
+    "dashboard.title": {
+        "nl": "Dashboard INA3221",
+        "en": "INA3221 Dashboard",
+        "de": "INA3221-Dashboard"
+    },
+    "dashboard.voltage": {
+        "nl": "🔌 Spanning (V)",
+        "en": "🔌 Voltage (V)",
+        "de": "🔌 Spannung (V)"
+    },
+    "instellingen.taal.label": {
+        "nl": "Taal",
+        "en": "Language",
+        "de": "Sprach"
+    },
+    "instellingen.taal.legend": {
+        "nl": "🌐 Taalinstelling",
+        "en": "🌐 Language setting",
+        "de": "🌐 Spracheinstellung"
+    },
+    "nav.dashboard": {
+        "nl": "📈 Overzicht",
+        "en": "📈 Overview",
+        "de": "📈 Übersicht"
+    },
+    "nav.meters": {
+        "nl": "⏱️ Meters",
+        "en": "⏱️ Meters",
+        "de": "⏱️ Messgeräte"
+    },
+    "root.connect_dashboard": {
+        "nl": "Verbinden & Dashboard",
+        "en": "Connection & Dashboard",
+        "de": "Verbindung & Dashboard"
+    },
+    "root.open_dashboard_wifi": {
+        "nl": "Open Dashboard via Wi-Fi",
+        "en": "Open Dashboard via Wi‑Fi",
+        "de": "Dashboard über Wi‑Fi öffnen"
+    },
+    "taal.duits": {
+        "nl": "Duits",
+        "en": "German",
+        "de": "Deutsch"
+    },
+    "taal.engels": {
+        "nl": "English",
+        "en": "English",
+        "de": "Englisch"
+    },
+    "taal.frans": {
+        "nl": "Frans",
+        "en": "Frans",
+        "de": "Frans"
+    },
+    "taal.fries": {
+        "nl": "Fries",
+        "en": "Frisian",
+        "de": "Friesisch"
+    },
+    "taal.gronings": {
+        "nl": "Gronings",
+        "en": "Gronings",
+        "de": "Gronings"
+    },
+    "taal.nederlands": {
+        "nl": "Nederlands",
+        "en": "Dutch",
+        "de": "Niederländisch"
+    },
+    "taal.Nedersaksisch": {
+        "nl": "Nedersaksisch",
+        "en": "Nedersaksisch",
+        "de": "Nedersaksisch"
+    },
+    "taal.Portugees": {
+        "nl": "Portugees",
+        "en": "Portuguese",
+        "de": "Portugiesisch"
+    },
+    "dashboard.state.charging": {
+        "nl": "Bezig met opladen",
+        "en": "Charging",
+        "de": "Am Laden"
+    },
+    "dashboard.state.full": {
+        "nl": "Volledig geladen",
+        "en": "Fully charged",
+        "de": "Vollständig geladen"
+    },
+    "dashboard.state.discharging": {
+        "nl": "Ontladen",
+        "en": "Discharging",
+        "de": "Entladen"
+    },
+    "dashboard.state.idle": {
+        "nl": "In rust",
+        "en": "Idle",
+        "de": "Im Leerlauf"
+    },
+    "dashboard.state.unknown": {
+        "nl": "Onbekend",
+        "en": "Unknown",
+        "de": "Unbekannt"
+    },
+    "dashboard.fetch_error": {
+        "nl": "Fout bij laden gegevens",
+        "en": "Error loading data",
+        "de": "Fehler beim Laden der Daten"
+    },
+    "root.menu": {
+        "nl": "menu",
+        "en": "menu",
+        "de": "menu"
+    },
+    "nav.raw_json": {
+        "nl": "Raw JSON",
+        "en": "Raw JSON",
+        "de": "Raw JSON"
+    }
+}

@@ -73,8 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 16),
                   ...data.channels
                       .where((c) => _shouldShow(c.name))
-                      .map<Widget>((c) => ChannelCard(channel: c))
-                      .toList(),
+                      .map<Widget>((c) => ChannelCard(channel: c)),
                 ],
               ),
             ),

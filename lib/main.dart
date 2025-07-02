@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/dashboard_screen.dart'; // hierin zit HomeScreen
 import 'screens/meters_screen.dart';
 import 'screens/raw_json_screen.dart';
 import 'models/data_model.dart';
 import 'services/data_service.dart';
 import 'services/data_repository.dart';
+import 'services/translations.dart'; // <-- import vertalingen
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Translations.load('nl'); // Laad nl vertalingen voordat app start
   runApp(const ALSSApp());
 }
 
@@ -37,8 +40,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   DataModel? _data;
   String? _error;
   bool _isLoading = true;
-
-  final titles = ["Dashboard", "Meters", "Raw JSON"];
 
   @override
   void initState() {
@@ -74,12 +75,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Zet hier de titels, zodat ze pas geladen worden nadat Translations klaar is
+    final titles = [
+      Translations.t('nav.dashboard'),
+      Translations.t('nav.meters'),
+      Translations.t('nav.raw_json'),
+    ];
+
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        body: Center(child: Text(Translations.t('dashboard.loading'))),
+      );
     }
 
     if (_error != null) {
-      return Scaffold(body: Center(child: Text("Fout bij laden: $_error")));
+      return Scaffold(
+        body: Center(
+          child: Text("${Translations.t('dashboard.fetch_error')}: $_error"),
+        ),
+      );
     }
 
     final screens = [
@@ -100,28 +114,28 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.teal),
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.teal),
               child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                Translations.t('root.menu'),
+                style: const TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
             ListTile(
               leading: const Icon(Icons.dashboard),
-              title: const Text('Dashboard'),
+              title: Text(Translations.t('nav.dashboard')),
               selected: _selectedIndex == 0,
               onTap: () => _onItemTapped(0),
             ),
             ListTile(
               leading: const Icon(Icons.speed),
-              title: const Text('Meters'),
+              title: Text(Translations.t('nav.meters')),
               selected: _selectedIndex == 1,
               onTap: () => _onItemTapped(1),
             ),
             ListTile(
               leading: const Icon(Icons.code),
-              title: const Text('Raw JSON'),
+              title: Text(Translations.t('nav.raw_json')),
               selected: _selectedIndex == 2,
               onTap: () => _onItemTapped(2),
             ),
@@ -136,13 +150,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             _selectedIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: const Icon(Icons.dashboard),
+            label: Translations.t('nav.dashboard'),
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.speed), label: 'Meters'),
-          BottomNavigationBarItem(icon: Icon(Icons.code), label: 'Raw JSON'),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.speed),
+            label: Translations.t('nav.meters'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.code),
+            label: Translations.t('nav.raw_json'),
+          ),
         ],
       ),
     );
