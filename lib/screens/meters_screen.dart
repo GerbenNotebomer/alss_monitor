@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../models/channel.dart';
-import '../services/translations.dart'; // ✅ nodig voor vertalingen
+import '../services/translations.dart';
 import 'settings_screen.dart';
 
 class MetersScreen extends StatefulWidget {
@@ -24,6 +24,7 @@ class _MetersScreenState extends State<MetersScreen> {
   double voltageMax = 14.4;
   double currentMin = -10;
   double currentMax = 10;
+  double gaugeSizePercent = 100;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _MetersScreenState extends State<MetersScreen> {
       voltageMax = prefs.getDouble('voltageMax') ?? voltageMax;
       currentMin = prefs.getDouble('currentMin') ?? currentMin;
       currentMax = prefs.getDouble('currentMax') ?? currentMax;
+      gaugeSizePercent = prefs.getDouble('gaugeSizePercent') ?? 100;
     });
   }
 
@@ -80,7 +82,7 @@ class _MetersScreenState extends State<MetersScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translations.t('nav.meters')), // ✅
+        title: Text(Translations.t('nav.meters')),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -96,17 +98,17 @@ class _MetersScreenState extends State<MetersScreen> {
               spacing: 10,
               children: [
                 FilterChip(
-                  label: Text(Translations.t('meters.filter.mppt')), // ✅
+                  label: Text(Translations.t('meters.filter.mppt')),
                   selected: showMPPT,
                   onSelected: (_) => _toggleFilter("mppt"),
                 ),
                 FilterChip(
-                  label: Text(Translations.t('meters.filter.accu1')), // ✅
+                  label: Text(Translations.t('meters.filter.accu1')),
                   selected: showAccu1,
                   onSelected: (_) => _toggleFilter("accu1"),
                 ),
                 FilterChip(
-                  label: Text(Translations.t('meters.filter.accu2')), // ✅
+                  label: Text(Translations.t('meters.filter.accu2')),
                   selected: showAccu2,
                   onSelected: (_) => _toggleFilter("accu2"),
                 ),
@@ -120,112 +122,118 @@ class _MetersScreenState extends State<MetersScreen> {
               itemBuilder: (context, index) {
                 final channel = filtered[index];
 
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          channel.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        if (channel.voltage != null)
-                          SfRadialGauge(
-                            title: GaugeTitle(
-                              text: Translations.t('dashboard.voltage'), // ✅
+                return Transform.scale(
+                  scale: gaugeSizePercent / 100,
+                  alignment: Alignment.topCenter,
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            channel.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            axes: [
-                              RadialAxis(
-                                minimum: voltageMin,
-                                maximum: voltageMax,
-                                ranges: [
-                                  GaugeRange(
-                                    startValue: voltageMin,
-                                    endValue: 11.5,
-                                    color: Colors.red.shade400,
-                                  ),
-                                  GaugeRange(
-                                    startValue: 11.5,
-                                    endValue: 13.0,
-                                    color: Colors.orange.shade400,
-                                  ),
-                                  GaugeRange(
-                                    startValue: 13.0,
-                                    endValue: voltageMax,
-                                    color: Colors.green.shade400,
-                                  ),
-                                ],
-                                pointers: [
-                                  NeedlePointer(value: channel.voltage!),
-                                ],
-                                annotations: [
-                                  GaugeAnnotation(
-                                    widget: Text(
-                                      '${channel.voltage!.toStringAsFixed(2)} V',
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    angle: 90,
-                                    positionFactor: 0.5,
-                                  ),
-                                ],
-                              ),
-                            ],
                           ),
-                        const SizedBox(height: 10),
-                        if (channel.current != null)
-                          SfRadialGauge(
-                            title: GaugeTitle(
-                              text: Translations.t('dashboard.current'), // ✅
+                          const SizedBox(height: 12),
+                          if (channel.voltage != null)
+                            SfRadialGauge(
+                              title: GaugeTitle(
+                                text: Translations.t('dashboard.voltage'),
+                              ),
+                              axes: [
+                                RadialAxis(
+                                  radiusFactor: 1.0,
+                                  minimum: voltageMin,
+                                  maximum: voltageMax,
+                                  ranges: [
+                                    GaugeRange(
+                                      startValue: voltageMin,
+                                      endValue: 11.5,
+                                      color: Colors.red.shade400,
+                                    ),
+                                    GaugeRange(
+                                      startValue: 11.5,
+                                      endValue: 13.0,
+                                      color: Colors.orange.shade400,
+                                    ),
+                                    GaugeRange(
+                                      startValue: 13.0,
+                                      endValue: voltageMax,
+                                      color: Colors.green.shade400,
+                                    ),
+                                  ],
+                                  pointers: [
+                                    NeedlePointer(value: channel.voltage!),
+                                  ],
+                                  annotations: [
+                                    GaugeAnnotation(
+                                      widget: Text(
+                                        '${channel.voltage!.toStringAsFixed(2)} V',
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      angle: 90,
+                                      positionFactor: 0.5,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            axes: [
-                              RadialAxis(
-                                minimum: currentMin,
-                                maximum: currentMax,
-                                ranges: [
-                                  GaugeRange(
-                                    startValue: currentMin,
-                                    endValue: -5,
-                                    color: Colors.red.shade400,
-                                  ),
-                                  GaugeRange(
-                                    startValue: -5,
-                                    endValue: 0,
-                                    color: Colors.orange.shade400,
-                                  ),
-                                  GaugeRange(
-                                    startValue: 0,
-                                    endValue: 5,
-                                    color: Colors.green.shade400,
-                                  ),
-                                  GaugeRange(
-                                    startValue: 5,
-                                    endValue: currentMax,
-                                    color: Colors.orange.shade400,
-                                  ),
-                                ],
-                                pointers: [
-                                  NeedlePointer(value: channel.current!),
-                                ],
-                                annotations: [
-                                  GaugeAnnotation(
-                                    widget: Text(
-                                      '${channel.current!.toStringAsFixed(2)} A',
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    angle: 90,
-                                    positionFactor: 0.5,
-                                  ),
-                                ],
+                          const SizedBox(height: 10),
+                          if (channel.current != null)
+                            SfRadialGauge(
+                              title: GaugeTitle(
+                                text: Translations.t('dashboard.current'),
                               ),
-                            ],
-                          ),
-                      ],
+                              axes: [
+                                RadialAxis(
+                                  radiusFactor: 1.0,
+                                  minimum: currentMin,
+                                  maximum: currentMax,
+                                  ranges: [
+                                    GaugeRange(
+                                      startValue: currentMin,
+                                      endValue: -5,
+                                      color: Colors.red.shade400,
+                                    ),
+                                    GaugeRange(
+                                      startValue: -5,
+                                      endValue: 0,
+                                      color: Colors.orange.shade400,
+                                    ),
+                                    GaugeRange(
+                                      startValue: 0,
+                                      endValue: 5,
+                                      color: Colors.green.shade400,
+                                    ),
+                                    GaugeRange(
+                                      startValue: 5,
+                                      endValue: currentMax,
+                                      color: Colors.orange.shade400,
+                                    ),
+                                  ],
+                                  pointers: [
+                                    NeedlePointer(value: channel.current!),
+                                  ],
+                                  annotations: [
+                                    GaugeAnnotation(
+                                      widget: Text(
+                                        '${channel.current!.toStringAsFixed(2)} A',
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      angle: 90,
+                                      positionFactor: 0.5,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 );
