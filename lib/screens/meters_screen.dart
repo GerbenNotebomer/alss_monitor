@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../models/channel.dart';
+import '../services/translations.dart'; // ✅ nodig voor vertalingen
 import 'settings_screen.dart';
 
 class MetersScreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class _MetersScreenState extends State<MetersScreen> {
   bool showAccu1 = true;
   bool showAccu2 = true;
 
-  // Default waarden voor de meters
   double voltageMin = 10.7;
   double voltageMax = 14.4;
   double currentMin = -10;
@@ -80,7 +80,7 @@ class _MetersScreenState extends State<MetersScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Meters"),
+        title: Text(Translations.t('nav.meters')), // ✅
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -96,17 +96,17 @@ class _MetersScreenState extends State<MetersScreen> {
               spacing: 10,
               children: [
                 FilterChip(
-                  label: const Text("MPPT"),
+                  label: Text(Translations.t('meters.filter.mppt')), // ✅
                   selected: showMPPT,
                   onSelected: (_) => _toggleFilter("mppt"),
                 ),
                 FilterChip(
-                  label: const Text("Accu 1"),
+                  label: Text(Translations.t('meters.filter.accu1')), // ✅
                   selected: showAccu1,
                   onSelected: (_) => _toggleFilter("accu1"),
                 ),
                 FilterChip(
-                  label: const Text("Accu 2"),
+                  label: Text(Translations.t('meters.filter.accu2')), // ✅
                   selected: showAccu2,
                   onSelected: (_) => _toggleFilter("accu2"),
                 ),
@@ -137,7 +137,9 @@ class _MetersScreenState extends State<MetersScreen> {
                         const SizedBox(height: 12),
                         if (channel.voltage != null)
                           SfRadialGauge(
-                            title: const GaugeTitle(text: 'Voltage (V)'),
+                            title: GaugeTitle(
+                              text: Translations.t('dashboard.voltage'), // ✅
+                            ),
                             axes: [
                               RadialAxis(
                                 minimum: voltageMin,
@@ -178,7 +180,9 @@ class _MetersScreenState extends State<MetersScreen> {
                         const SizedBox(height: 10),
                         if (channel.current != null)
                           SfRadialGauge(
-                            title: const GaugeTitle(text: 'Stroom (A)'),
+                            title: GaugeTitle(
+                              text: Translations.t('dashboard.current'), // ✅
+                            ),
                             axes: [
                               RadialAxis(
                                 minimum: currentMin,
