@@ -61,12 +61,6 @@
 
     </section>
     
-<section class="desc markdown">
-  <p>Haalt de data op en decodeert deze naar een <a href="../../models_data_model/DataModel-class.html">DataModel</a>.</p>
-<p>Probeert elke URL uit <a href="../../services_data_service/DataService/urls.html">urls</a> totdat een succesvolle response
-met status 200 wordt ontvangen.</p>
-<p>Gooit een <a href="https://api.flutter.dev/flutter/dart-core/Exception-class.html">Exception</a> als geen van de URLs data kan leveren.</p>
-</section>
 
 
     
@@ -75,19 +69,34 @@ met status 200 wordt ontvangen.</p>
   <pre class="language-dart"><code class="language-dart">Future&lt;DataModel&gt; fetchData() async {
   for (final url in urls) {
     try {
+      await DebugLogger.log(
+        &#39;DataService: Proberen data op te halen van $url&#39;,
+      );
       final response = await http
           .get(Uri.parse(url))
           .timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
+        await DebugLogger.log(
+          &#39;DataService: Data succesvol opgehaald van $url&#39;,
+        );
         final jsonMap = json.decode(response.body) as Map&lt;String, dynamic&gt;;
         return DataModel.fromJson(jsonMap);
+      } else {
+        await DebugLogger.log(
+          &#39;DataService: Response status ${response.statusCode} van $url&#39;,
+        );
       }
-    } catch (e) {
-      &#47;&#47; Timeout of andere error, probeer volgende url
+    } catch (e, stack) {
+      await DebugLogger.log(
+        &#39;DataService: Fout bij ophalen van $url: $e\n$stack&#39;,
+      );
+      &#47;&#47; probeer volgende url
     }
   }
-  throw Exception(&quot;Fout bij ophalen data van beide routes&quot;);
+  final errorMsg = &quot;Fout bij ophalen data van alle URLs&quot;;
+  await DebugLogger.log(&#39;DataService: $errorMsg&#39;);
+  throw Exception(errorMsg);
 }</code></pre>
 </section>
 

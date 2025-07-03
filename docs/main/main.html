@@ -61,30 +61,21 @@
 
     </section>
     
-<section class="desc markdown">
-  <p>Entry point van de applicatie.</p>
-<p>Deze functie zorgt ervoor dat Flutter correct wordt geïnitialiseerd,
-haalt de eerder opgeslagen taalinstelling op via SharedPreferences,
-laadt de vertalingen voor de gekozen taal, en start vervolgens de app.</p>
-<p>De standaardtaal is Nederlands ('nl') als er nog geen taal opgeslagen is.</p>
-</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void main() async {
-  &#47;&#47; Zorgt ervoor dat Flutter bindings goed zijn geladen voor async werk.
   WidgetsFlutterBinding.ensureInitialized();
+  await DebugLogger.init();
+  await DebugLogger.log(&#39;App gestart&#39;);
 
-  &#47;&#47; Haal opgeslagen taalcode op uit voorkeuren, of standaard naar &#39;nl&#39;.
   final prefs = await SharedPreferences.getInstance();
   final savedLang = prefs.getString(&#39;languageCode&#39;) ?? &#39;nl&#39;;
 
-  &#47;&#47; Laad vertalingen voor de gekozen taal.
   await Translations.load(savedLang);
 
-  &#47;&#47; Start de app met de gekozen initiële taalcode.
   runApp(ALSSApp(initialLangCode: savedLang));
 }</code></pre>
 </section>

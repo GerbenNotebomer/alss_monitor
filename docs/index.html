@@ -43,123 +43,8 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <h1 id="alss-monitor-app">ALSS Monitor App</h1>
-<p>De ALSS Monitor App is een Flutter-applicatie voor het uitlezen van een acculaadsysteem via een lokaal access point. De app communiceert met een ESP32 die als webserver fungeert en periodiek JSON-data aanbiedt met informatie over accu’s, laadstatus, vermogens, en omgevingssensoren (temperatuur, luchtvochtigheid en luchtdruk).</p>
-<h2 id="systeemoverzicht">Systeemoverzicht</h2>
-<h3 id="hardwarecomponenten">Hardwarecomponenten:</h3>
-<ul>
-<li>ESP32 microcontroller (met WiFi access point en webserver)</li>
-<li>INA3221 module: meting van spanning, stroom en vermogen per kanaal</li>
-<li>AHT20 + BMP280 module: temperatuur, luchtvochtigheid en luchtdruk</li>
-</ul>
-<h3 id="communicatie">Communicatie:</h3>
-<ul>
-<li>ESP32 draait in Access Point modus</li>
-<li>JSON wordt geserveerd op: <a href="http://192.168.4.1/data.json">http://192.168.4.1/data.json</a></li>
-</ul>
-<h2 id="json-structuur-voorbeeld">JSON-structuur (voorbeeld)</h2>
-<p>De JSON die door de ESP32 wordt gegenereerd heeft het volgende formaat:</p>
-<p>```json
-{
-"channels": <code>
-{
-"name": "MPPT",
-"current": -1.01,
-"power": -13.34,
-"voltage": 14.03,
-"totalAh": -1.14,
-"totalWh": -16.09,
-"batteryCapacityAh": 0
-},
-{
-"name": "Accu 1",
-"current": 0.05,
-"power": 0.69,
-"voltage": 13.97,
-"totalAh": 0.57,
-"totalWh": 7.55,
-"batteryCapacityAh": 200
-},
-{
-"name": "Accu 2",
-"current": 0,
-"power": 0,
-"voltage": 0,
-"totalAh": 0,
-"totalWh": 0,
-"batteryCapacityAh": 72
-},
-{
-"name": "AHT20/BMP280",
-"temperatureAHT": 26.05,
-"humidityAHT": 47.92,
-"temperatureBMP": 26.49,
-"pressure": 1024.58
-}
-</code>,
-"datetime": "30/06/2025 11:32:58",
-"dag": "Moandei",
-"batteries": <code>
-{
-"state": 0,
-"stateText": "Laden",
-"stateOfCharge": 100,
-"days": 8,
-"hours": 16,
-"minutes": 11
-},
-{
-"state": 0,
-"stateText": "Laden",
-"stateOfCharge": 0,
-"days": -1,
-"hours": -1,
-"minutes": -1
-}
-</code>
-}
-```</p>
-<h2 id="app-functionaliteit">App Functionaliteit</h2>
-<p>De Flutter-app biedt:</p>
-<ul>
-<li>Real-time uitlezing van kanaalgegevens zoals spanning, stroom, vermogen, energie (Wh/Ah)</li>
-<li>Weergave van temperatuur, luchtvochtigheid en luchtdruk</li>
-<li>Filterfunctie om bepaalde kanaalgroepen (MPPT / Accu 1 / Accu 2) tijdelijk te verbergen</li>
-<li>Automatische update van gegevens elke 5 seconden</li>
-<li>Handmatige refresh via:
-<ul>
-<li>Pull-to-refresh</li>
-<li>Refresh-knop rechtsonder</li>
-</ul>
-</li>
-</ul>
-<h2 id="api-documentatie">API Documentatie</h2>
-<p>De API documentatie is beschikbaar via de <a href="https://%3Cjouw-gebruikersnaam%3E.github.io/%3Cjouw-repo%3E/">GitHub Pages</a> website.</p>
-<p>Of lokaal te bekijken in de map <code>docs</code> door <code>docs/index.html</code> te openen.</p>
-<h2 id="belangrijkste-flutter-modules">Belangrijkste Flutter-modules</h2>
-<p>Bestand — Functie</p>
-<p>lib/services/data_service.dart — Haalt JSON-data op via HTTP GET<br>
-lib/screens/home_screen.dart — Hoofdscherm met filters, kanaalweergave en refresh-logica<br>
-lib/widgets/channel_card.dart — Toont gegevens per kanaal als een kaartje<br>
-lib/widgets/filter_chips_row.dart — Chips om MPPT / Accu 1 / Accu 2 te filteren<br>
-lib/models/channel.dart — Datamodel voor kanaalgegevens</p>
-<h2 id="app-installeren-en-starten">App installeren en starten</h2>
-<p>Verbind je apparaat met het access point van de ESP32</p>
-<p>Start de Flutter-app:</p>
-<p>```
-flutter pub get
-flutter run
-```</p>
-<p>Zorg dat het ESP32-apparaat actief is en JSON serveert op: <a href="http://192.168.4.1/data.json">http://192.168.4.1/data.json</a></p>
-<h2 id="toekomstige-ideen">Toekomstige ideeën</h2>
-<ul>
-<li>Grafieken tonen per kanaal (historie)</li>
-<li>Beter batterijoverzicht uit batteries[]</li>
-<li>Multi-language ondersteuning</li>
-<li>Gebruik buiten lokaal netwerk via WiFi Client-modus</li>
-</ul>
-<h2 id="licentie">Licentie</h2>
-<p>Nog niet bepaald.</p>
+  <h1 id="projectnaam">Projectnaam</h1>
+<p>Bekijk de API-documentatie hier: <a href="docs/index.html">Docs</a></p>
 </section>
 
 
@@ -236,6 +121,13 @@ flutter run
 <dd>
 </dd>
 
+          <dt id="debug_screen">
+  <span class="name"><a href="screens_debug_screen/">screens\debug_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
           <dt id="meters_screen">
   <span class="name"><a href="screens_meters_screen/">screens\meters_screen</a></span> 
 
@@ -273,6 +165,13 @@ flutter run
 
           <dt id="data_service">
   <span class="name"><a href="services_data_service/">services\data_service</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="debug_logger">
+  <span class="name"><a href="services_debug_logger/">services\debug_logger</a></span> 
 
 </dt>
 <dd>
@@ -347,12 +246,14 @@ flutter run
       <li><a href="navigation_main_navigation/">navigation\main_navigation</a></li>
       <li><a href="navigation_navigation/">navigation\navigation</a></li>
       <li><a href="screens_dashboard_screen/">screens\dashboard_screen</a></li>
+      <li><a href="screens_debug_screen/">screens\debug_screen</a></li>
       <li><a href="screens_meters_screen/">screens\meters_screen</a></li>
       <li><a href="screens_raw_json_screen/">screens\raw_json_screen</a></li>
       <li><a href="screens_screens/">screens\screens</a></li>
       <li><a href="screens_settings_screen/">screens\settings_screen</a></li>
       <li><a href="services_data_repository/">services\data_repository</a></li>
       <li><a href="services_data_service/">services\data_service</a></li>
+      <li><a href="services_debug_logger/">services\debug_logger</a></li>
       <li><a href="services_services/">services\services</a></li>
       <li><a href="services_translations/">services\translations</a></li>
       <li><a href="widgets_base_page/">widgets\base_page</a></li>

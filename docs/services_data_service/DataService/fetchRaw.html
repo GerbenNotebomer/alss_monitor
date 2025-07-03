@@ -61,12 +61,6 @@
 
     </section>
     
-<section class="desc markdown">
-  <p>Haalt de raw JSON string op van de eerste werkende URL.</p>
-<p>Probeert URLs in volgorde en retourneert de body als string
-bij een status 200.</p>
-<p>Gooit een <a href="https://api.flutter.dev/flutter/dart-core/Exception-class.html">Exception</a> als geen enkele URL succesvol is.</p>
-</section>
 
 
     
@@ -75,18 +69,33 @@ bij een status 200.</p>
   <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; fetchRaw() async {
   for (final url in urls) {
     try {
+      await DebugLogger.log(
+        &#39;DataService: Proberen raw JSON op te halen van $url&#39;,
+      );
       final response = await http
           .get(Uri.parse(url))
           .timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
+        await DebugLogger.log(
+          &#39;DataService: Raw JSON succesvol opgehaald van $url&#39;,
+        );
         return response.body;
+      } else {
+        await DebugLogger.log(
+          &#39;DataService: Response status ${response.statusCode} van $url&#39;,
+        );
       }
-    } catch (e) {
-      &#47;&#47; Timeout of andere error, probeer volgende url
+    } catch (e, stack) {
+      await DebugLogger.log(
+        &#39;DataService: Fout bij ophalen raw JSON van $url: $e\n$stack&#39;,
+      );
+      &#47;&#47; probeer volgende url
     }
   }
-  throw Exception(&quot;Fout bij ophalen raw JSON van beide routes&quot;);
+  final errorMsg = &quot;Fout bij ophalen raw JSON van alle URLs&quot;;
+  await DebugLogger.log(&#39;DataService: $errorMsg&#39;);
+  throw Exception(errorMsg);
 }</code></pre>
 </section>
 

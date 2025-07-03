@@ -138,11 +138,21 @@ Widget build(BuildContext context) {
           selected: selectedIndex == 2,
           onTap: () =&gt; onItemTapped(2),
         ),
+
+        &#47;&#47;&#47; ✅ Nieuw debug-item
+        ListTile(
+          leading: const Icon(Icons.bug_report),
+          title: const Text(&#39;Debug&#39;),
+          selected: selectedIndex == 3,
+          onTap: () =&gt; onItemTapped(3),
+        ),
+
         const Divider(),
+
         ListTile(
           leading: const Icon(Icons.settings),
           title: Text(Translations.t(&#39;nav.settings&#39;)),
-          selected: selectedIndex == 3,
+          selected: selectedIndex == 4,
           onTap: () {
             Navigator.of(context).pop();
             onOpenSettings();
