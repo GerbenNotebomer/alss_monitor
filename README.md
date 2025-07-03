@@ -92,6 +92,12 @@ De Flutter-app biedt:
   - Pull-to-refresh
   - Refresh-knop rechtsonder
 
+## API Documentatie
+
+De API documentatie is beschikbaar via de [GitHub Pages](https://<jouw-gebruikersnaam>.github.io/<jouw-repo>/) website.
+
+Of lokaal te bekijken in de map `docs` door `docs/index.html` te openen.
+
 ## Belangrijkste Flutter-modules
 
 Bestand — Functie

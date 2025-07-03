@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import '../widgets/channel_card.dart';
-import '../widgets/filter_chips_row.dart';
-import '../models/data_model.dart';
 
+import 'package:alls_monitor/widgets/widgets.dart';
+import 'package:alls_monitor/models/models.dart';
+
+/// Dashboard scherm dat data toont van verschillende kanalen.
+///
+/// Bevat filters om te kiezen welke kanalen getoond worden (MPPT, Accu 1, Accu 2).
+/// Toont tijd van de data en voor elk kanaal een kaart met details.
+///
 class DashboardScreen extends StatefulWidget {
+  /// Data die getoond wordt op het dashboard.
   final DataModel? data;
 
+  /// Constructor.
   const DashboardScreen({super.key, required this.data});
 
   @override
@@ -17,6 +24,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool showAccu1 = true;
   bool showAccu2 = true;
 
+  /// Wisselt de filterstatus van het type kanaal.
+  ///
+  /// Mogelijke types: "mppt", "accu1", "accu2".
   void _toggleFilter(String type) {
     setState(() {
       if (type == "mppt") showMPPT = !showMPPT;
@@ -25,6 +35,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
+  /// Bepaalt of een kanaal getoond moet worden aan de hand van de filters.
+  ///
+  /// Controleert de naam van het kanaal op keywords.
   bool _shouldShow(String name) {
     final n = name.toLowerCase();
     if (n.contains("mppt")) return showMPPT;
@@ -37,19 +50,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final data = widget.data;
 
+    // Laat laadindicator zien als er nog geen data is.
     if (data == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("ALSS Monitor")),
+    return BasePage(
+      // title kan eventueel hier toegevoegd worden als parameter
       body: RefreshIndicator(
         onRefresh: () async {
-          // Optioneel: Je kunt hier een callback aanroepen om de data handmatig te verversen
-          // Bijvoorbeeld via een callback in de constructor
+          // Hier kun je optioneel een refresh logica toevoegen
         },
         child: Column(
           children: [
+            // Filterchips rij met toggles
             Padding(
               padding: const EdgeInsets.all(12),
               child: FilterChipsRow(
@@ -59,6 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onToggle: _toggleFilter,
               ),
             ),
+            // Lijst met kanalen die gefilterd worden weergegeven
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(16),

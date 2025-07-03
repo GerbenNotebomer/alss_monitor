@@ -2,14 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import '../models/channel.dart';
-import '../services/translations.dart';
-import 'settings_screen.dart';
+import 'package:alls_monitor/models/models.dart';
+import 'package:alls_monitor/services/services.dart';
+import 'package:alls_monitor/screens/screens.dart';
+import 'package:alls_monitor/widgets/widgets.dart';
 
+/// Scherm dat meterstanden toont met filters en instellingen.
+///
+/// Toont spannings- en stroomwaarden per kanaal in mooie meters.
+/// Gebruiker kan filters aan- of uitzetten voor MPPT, Accu 1 en Accu 2.
+/// Instellingen zoals min/max spanningen en stroom kunnen aangepast worden.
+///
 class MetersScreen extends StatefulWidget {
+  /// Lijst met kanalen om te tonen.
   final List<Channel> channels;
 
-  const MetersScreen({super.key, required this.channels});
+  /// Huidige taalcode (bv. "nl", "en").
+  final String currentLang;
+
+  /// Callback om taal te wijzigen.
+  final Future<void> Function(String) onChangeLanguage;
+
+  /// Constructor.
+  const MetersScreen({
+    super.key,
+    required this.channels,
+    required this.currentLang,
+    required this.onChangeLanguage,
+  });
 
   @override
   State<MetersScreen> createState() => _MetersScreenState();
@@ -20,6 +40,7 @@ class _MetersScreenState extends State<MetersScreen> {
   bool showAccu1 = true;
   bool showAccu2 = true;
 
+  // Instellingen met standaardwaarden
   double voltageMin = 10.7;
   double voltageMax = 14.4;
   double currentMin = -10;
@@ -32,6 +53,7 @@ class _MetersScreenState extends State<MetersScreen> {
     _loadSettings();
   }
 
+  /// Laadt instellingen uit SharedPreferences.
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -43,6 +65,9 @@ class _MetersScreenState extends State<MetersScreen> {
     });
   }
 
+  /// Wisselt filterstatus van een kanaaltype.
+  ///
+  /// Mogelijke types: "mppt", "accu1", "accu2".
   void _toggleFilter(String type) {
     setState(() {
       if (type == "mppt") showMPPT = !showMPPT;
@@ -51,6 +76,7 @@ class _MetersScreenState extends State<MetersScreen> {
     });
   }
 
+  /// Bepaalt of een kanaal getoond moet worden op basis van filters.
   bool _shouldShow(String name) {
     final n = name.toLowerCase();
     if (n.contains("mppt")) return showMPPT;
@@ -59,6 +85,7 @@ class _MetersScreenState extends State<MetersScreen> {
     return true;
   }
 
+  /// Opent het instellingen scherm en laadt instellingen opnieuw na update.
   Future<void> _openSettings() async {
     final updated = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
@@ -67,6 +94,8 @@ class _MetersScreenState extends State<MetersScreen> {
           voltageMax: voltageMax,
           currentMin: currentMin,
           currentMax: currentMax,
+          currentLang: widget.currentLang,
+          onChangeLanguage: widget.onChangeLanguage,
         ),
       ),
     );
@@ -78,20 +107,17 @@ class _MetersScreenState extends State<MetersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Filter kanalen op basis van actieve filters
     final filtered = widget.channels.where((c) => _shouldShow(c.name)).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(Translations.t('nav.meters')),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: _openSettings,
-          ),
-        ],
-      ),
+    return BasePage(
+      // title kan optioneel toegevoegd worden hier
+      actions: [
+        IconButton(icon: const Icon(Icons.settings), onPressed: _openSettings),
+      ],
       body: Column(
         children: [
+          // Filterchips rij
           Padding(
             padding: const EdgeInsets.all(12),
             child: Wrap(
@@ -115,6 +141,7 @@ class _MetersScreenState extends State<MetersScreen> {
               ],
             ),
           ),
+          // Lijst met kaarten met meters
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(12),
@@ -132,6 +159,7 @@ class _MetersScreenState extends State<MetersScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Naam van het kanaal
                           Text(
                             channel.name,
                             style: const TextStyle(
@@ -140,6 +168,7 @@ class _MetersScreenState extends State<MetersScreen> {
                             ),
                           ),
                           const SizedBox(height: 12),
+                          // Voltage meter, indien aanwezig
                           if (channel.voltage != null)
                             SfRadialGauge(
                               title: GaugeTitle(
@@ -184,6 +213,7 @@ class _MetersScreenState extends State<MetersScreen> {
                               ],
                             ),
                           const SizedBox(height: 10),
+                          // Current meter, indien aanwezig
                           if (channel.current != null)
                             SfRadialGauge(
                               title: GaugeTitle(

@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/translations.dart';
+import 'package:alls_monitor/services/services.dart';
 
+/// Scherm waarin gebruikers de instellingen kunnen aanpassen.
+///
+/// Bevat invoervelden voor spannings- en stroomlimieten, meterschaal,
+/// en een dropdown voor taalkeuze.
+/// Instellingen worden opgeslagen in SharedPreferences.
+///
 class SettingsScreen extends StatefulWidget {
+  /// Minimum spanningswaarde.
   final double voltageMin;
+
+  /// Maximum spanningswaarde.
   final double voltageMax;
+
+  /// Minimum stroomwaarde.
   final double currentMin;
+
+  /// Maximum stroomwaarde.
   final double currentMax;
 
+  /// Huidige taalcode (bijv. 'nl', 'en').
+  final String currentLang;
+
+  /// Callback om de taal te wijzigen, die buiten deze widget wordt afgehandeld.
+  final Future<void> Function(String) onChangeLanguage;
+
+  /// Constructor met verplichte parameters.
   const SettingsScreen({
     super.key,
     required this.voltageMin,
     required this.voltageMax,
     required this.currentMin,
     required this.currentMax,
+    required this.currentLang,
+    required this.onChangeLanguage,
   });
 
   @override
@@ -22,11 +44,15 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  // Controllers voor tekstvelden
   late TextEditingController voltageMinController;
   late TextEditingController voltageMaxController;
   late TextEditingController currentMinController;
   late TextEditingController currentMaxController;
   late TextEditingController gaugeSizeController;
+
+  // Lokale variabele voor huidige taalkeuze
+  late String currentLang;
 
   @override
   void initState() {
@@ -43,13 +69,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     currentMaxController = TextEditingController(
       text: widget.currentMax.toString(),
     );
+    gaugeSizeController = TextEditingController(text: '100'); // Standaardwaarde
 
-    // Gauge size standaard op 100% instellen, wordt later overschreven
-    gaugeSizeController = TextEditingController(text: '100');
+    // Initieer huidige taal van widget
+    currentLang = widget.currentLang;
 
+    // Laad meterschaal-instelling uit SharedPreferences
     _loadGaugeSize();
   }
 
+  /// Laadt de meterschaalwaarde uit SharedPreferences.
   Future<void> _loadGaugeSize() async {
     final prefs = await SharedPreferences.getInstance();
     final gaugeSize = prefs.getDouble('gaugeSizePercent') ?? 100;
@@ -60,6 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
+    // Controllers netjes opruimen
     voltageMinController.dispose();
     voltageMaxController.dispose();
     currentMinController.dispose();
@@ -68,6 +98,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
+  /// Valideert en slaat de instellingen op.
+  ///
+  /// Als een invoer geen geldig getal is, toont een foutmelding.
+  /// Bij succesvolle opslag wordt het scherm gesloten met resultaat `true`.
   Future<void> _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -97,6 +131,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Navigator.of(context).pop(true);
   }
 
+  /// Bouwt een tekstveld voor numerieke invoer met label.
   Widget _buildNumberField(TextEditingController controller, String label) {
     return SizedBox(
       width: 250,
@@ -121,6 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isWideScreen = screenWidth >= 600;
 
+    /// Bouwt een rij of kolom van twee invoervelden, afhankelijk van schermbreedte.
     Widget buildFieldPair(
       TextEditingController c1,
       String label1,
@@ -148,6 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     }
 
+    /// Bouwt een gestileerde card met titel en inhoud.
     Widget buildSettingBlock(String title, Widget content) {
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -180,6 +217,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Spanning instellingen
               buildSettingBlock(
                 Translations.t('settings.voltage_group_title'),
                 buildFieldPair(
@@ -189,6 +227,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Translations.t('settings.voltage_max'),
                 ),
               ),
+
+              // Stroom instellingen
               buildSettingBlock(
                 Translations.t('settings.current_group_title'),
                 buildFieldPair(
@@ -198,14 +238,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Translations.t('settings.current_max'),
                 ),
               ),
+
+              // Meterschaal instelling
               buildSettingBlock(
-                "Meterschaal (%)", // Voeg hier eventueel vertaling toe
+                "Meterschaal (%)",
                 _buildNumberField(
                   gaugeSizeController,
                   "Grootte van meters in %",
                 ),
               ),
+
+              // Taal keuze dropdown
+              buildSettingBlock(
+                Translations.t('instellingen.taal.label'),
+                DropdownButton<String>(
+                  value: currentLang,
+                  items: Translations.getLanguageKeys().map((langCode) {
+                    return DropdownMenuItem(
+                      value: langCode,
+                      child: Text(
+                        Translations.getLanguageDisplayName(langCode),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newLang) async {
+                    if (newLang != null && newLang != currentLang) {
+                      setState(() {
+                        currentLang = newLang;
+                      });
+                      await widget.onChangeLanguage(newLang);
+                    }
+                  },
+                ),
+              ),
+
               const SizedBox(height: 24),
+
+              // Opslaan knop
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

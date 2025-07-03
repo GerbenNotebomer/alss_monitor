@@ -212,9 +212,19 @@ function upload_apk_to_sd() {
         echo -e "${RED}❌ Upload mislukt met HTTP statuscode: $response_code${NC}"
     fi
 }
-
 function create_readme_and_push() {
-cat > README.md << 'EOF'
+  # 1. Genereer dart API docs
+  echo "Dart docs genereren..."
+  dart doc
+  
+  # 2. Maak docs map aan en kopieer dart docs ernaartoe
+  echo "Docs kopiëren naar /docs voor GitHub Pages..."
+  rm -rf docs
+  mkdir docs
+  cp -r doc/api/* docs/
+  
+  # 3. Maak README.md met link naar docs
+  cat > README.md << 'EOF'
 # ALSS Monitor App
 
 De ALSS Monitor App is een Flutter-applicatie voor het uitlezen van een acculaadsysteem via een lokaal access point. De app communiceert met een ESP32 die als webserver fungeert en periodiek JSON-data aanbiedt met informatie over accu’s, laadstatus, vermogens, en omgevingssensoren (temperatuur, luchtvochtigheid en luchtdruk).
@@ -309,6 +319,12 @@ De Flutter-app biedt:
   - Pull-to-refresh
   - Refresh-knop rechtsonder
 
+## API Documentatie
+
+De API documentatie is beschikbaar via de [GitHub Pages](https://<jouw-gebruikersnaam>.github.io/<jouw-repo>/) website.
+
+Of lokaal te bekijken in de map `docs` door `docs/index.html` te openen.
+
 ## Belangrijkste Flutter-modules
 
 Bestand — Functie
@@ -344,17 +360,19 @@ Zorg dat het ESP32-apparaat actief is en JSON serveert op: http://192.168.4.1/da
 Nog niet bepaald.
 EOF
 
-    echo "README.md is aangemaakt."
+  echo "README.md is aangemaakt."
 
-    git add -A
-    if git diff --cached --quiet; then
-        echo "Geen nieuwe wijzigingen om te committen."
-    else
-        git commit -m "Update README.md en verwijder ongewenste bestanden"
-        git push --force origin master
-        echo "README.md gecommit en gepusht naar GitHub."
-    fi
+  # 4. Commit en push alles
+  git add -A
+  if git diff --cached --quiet; then
+      echo "Geen nieuwe wijzigingen om te committen."
+  else
+      git commit -m "Update README.md en docs"
+      git push --force origin master
+      echo "README.md en docs gecommit en gepusht naar GitHub."
+  fi
 }
+
 
 function menu() {
     clear

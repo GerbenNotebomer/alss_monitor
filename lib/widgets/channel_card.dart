@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import '../models/channel.dart';
+import 'package:alls_monitor/models/models.dart';
 
+/// Kaart-widget die de gegevens van een [Channel] overzichtelijk weergeeft.
+///
+/// Toont naam, voltage, stroom, vermogen, temperatuur, vochtigheid en luchtdruk
+/// als deze waarden aanwezig zijn.
+///
 class ChannelCard extends StatelessWidget {
+  /// Het channel-model waarvan de gegevens getoond worden.
   final Channel channel;
 
+  /// Constructor voor [ChannelCard].
+  ///
+  /// Vereist een niet-null [channel].
   const ChannelCard({super.key, required this.channel});
 
   @override
@@ -17,11 +26,15 @@ class ChannelCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Naam van het channel
             Text(
               channel.name,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
+
             const SizedBox(height: 8),
+
+            // Optionele waarden, alleen tonen als niet null
             if (channel.voltage != null)
               Text("🔋 Voltage: ${channel.voltage!.toStringAsFixed(2)} V"),
             if (channel.current != null)

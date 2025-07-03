@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="alls_monitor API docs, for the Dart programming language.">
+  <title>alls_monitor - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">alls_monitor package</li>
+  </ol>
+  <div class="self-name">alls_monitor</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="alss-monitor-app">ALSS Monitor App</h1>
+<p>De ALSS Monitor App is een Flutter-applicatie voor het uitlezen van een acculaadsysteem via een lokaal access point. De app communiceert met een ESP32 die als webserver fungeert en periodiek JSON-data aanbiedt met informatie over accu’s, laadstatus, vermogens, en omgevingssensoren (temperatuur, luchtvochtigheid en luchtdruk).</p>
+<h2 id="systeemoverzicht">Systeemoverzicht</h2>
+<h3 id="hardwarecomponenten">Hardwarecomponenten:</h3>
+<ul>
+<li>ESP32 microcontroller (met WiFi access point en webserver)</li>
+<li>INA3221 module: meting van spanning, stroom en vermogen per kanaal</li>
+<li>AHT20 + BMP280 module: temperatuur, luchtvochtigheid en luchtdruk</li>
+</ul>
+<h3 id="communicatie">Communicatie:</h3>
+<ul>
+<li>ESP32 draait in Access Point modus</li>
+<li>JSON wordt geserveerd op: <a href="http://192.168.4.1/data.json">http://192.168.4.1/data.json</a></li>
+</ul>
+<h2 id="json-structuur-voorbeeld">JSON-structuur (voorbeeld)</h2>
+<p>De JSON die door de ESP32 wordt gegenereerd heeft het volgende formaat:</p>
+<p>```json
+{
+"channels": <code>
+{
+"name": "MPPT",
+"current": -1.01,
+"power": -13.34,
+"voltage": 14.03,
+"totalAh": -1.14,
+"totalWh": -16.09,
+"batteryCapacityAh": 0
+},
+{
+"name": "Accu 1",
+"current": 0.05,
+"power": 0.69,
+"voltage": 13.97,
+"totalAh": 0.57,
+"totalWh": 7.55,
+"batteryCapacityAh": 200
+},
+{
+"name": "Accu 2",
+"current": 0,
+"power": 0,
+"voltage": 0,
+"totalAh": 0,
+"totalWh": 0,
+"batteryCapacityAh": 72
+},
+{
+"name": "AHT20/BMP280",
+"temperatureAHT": 26.05,
+"humidityAHT": 47.92,
+"temperatureBMP": 26.49,
+"pressure": 1024.58
+}
+</code>,
+"datetime": "30/06/2025 11:32:58",
+"dag": "Moandei",
+"batteries": <code>
+{
+"state": 0,
+"stateText": "Laden",
+"stateOfCharge": 100,
+"days": 8,
+"hours": 16,
+"minutes": 11
+},
+{
+"state": 0,
+"stateText": "Laden",
+"stateOfCharge": 0,
+"days": -1,
+"hours": -1,
+"minutes": -1
+}
+</code>
+}
+```</p>
+<h2 id="app-functionaliteit">App Functionaliteit</h2>
+<p>De Flutter-app biedt:</p>
+<ul>
+<li>Real-time uitlezing van kanaalgegevens zoals spanning, stroom, vermogen, energie (Wh/Ah)</li>
+<li>Weergave van temperatuur, luchtvochtigheid en luchtdruk</li>
+<li>Filterfunctie om bepaalde kanaalgroepen (MPPT / Accu 1 / Accu 2) tijdelijk te verbergen</li>
+<li>Automatische update van gegevens elke 5 seconden</li>
+<li>Handmatige refresh via:
+<ul>
+<li>Pull-to-refresh</li>
+<li>Refresh-knop rechtsonder</li>
+</ul>
+</li>
+</ul>
+<h2 id="belangrijkste-flutter-modules">Belangrijkste Flutter-modules</h2>
+<p>Bestand — Functie</p>
+<p>lib/services/data_service.dart — Haalt JSON-data op via HTTP GET<br>
+lib/screens/home_screen.dart — Hoofdscherm met filters, kanaalweergave en refresh-logica<br>
+lib/widgets/channel_card.dart — Toont gegevens per kanaal als een kaartje<br>
+lib/widgets/filter_chips_row.dart — Chips om MPPT / Accu 1 / Accu 2 te filteren<br>
+lib/models/channel.dart — Datamodel voor kanaalgegevens</p>
+<h2 id="app-installeren-en-starten">App installeren en starten</h2>
+<p>Verbind je apparaat met het access point van de ESP32</p>
+<p>Start de Flutter-app:</p>
+<p>```
+flutter pub get
+flutter run
+```</p>
+<p>Zorg dat het ESP32-apparaat actief is en JSON serveert op: <a href="http://192.168.4.1/data.json">http://192.168.4.1/data.json</a></p>
+<h2 id="toekomstige-ideen">Toekomstige ideeën</h2>
+<ul>
+<li>Grafieken tonen per kanaal (historie)</li>
+<li>Beter batterijoverzicht uit batteries[]</li>
+<li>Multi-language ondersteuning</li>
+<li>Gebruik buiten lokaal netwerk via WiFi Client-modus</li>
+</ul>
+<h2 id="licentie">Licentie</h2>
+<p>Nog niet bepaald.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="app">
+  <span class="name"><a href="app/">app</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="config">
+  <span class="name"><a href="config_config/">config\config</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="main">
+  <span class="name"><a href="main/">main</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="channel">
+  <span class="name"><a href="models_channel/">models\channel</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="data_model">
+  <span class="name"><a href="models_data_model/">models\data_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="models">
+  <span class="name"><a href="models_models/">models\models</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="app_drawer">
+  <span class="name"><a href="navigation_app_drawer/">navigation\app_drawer</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="main_navigation">
+  <span class="name"><a href="navigation_main_navigation/">navigation\main_navigation</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="navigation">
+  <span class="name"><a href="navigation_navigation/">navigation\navigation</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="dashboard_screen">
+  <span class="name"><a href="screens_dashboard_screen/">screens\dashboard_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="meters_screen">
+  <span class="name"><a href="screens_meters_screen/">screens\meters_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="raw_json_screen">
+  <span class="name"><a href="screens_raw_json_screen/">screens\raw_json_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="screens">
+  <span class="name"><a href="screens_screens/">screens\screens</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="settings_screen">
+  <span class="name"><a href="screens_settings_screen/">screens\settings_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="data_repository">
+  <span class="name"><a href="services_data_repository/">services\data_repository</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="data_service">
+  <span class="name"><a href="services_data_service/">services\data_service</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="services">
+  <span class="name"><a href="services_services/">services\services</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="translations">
+  <span class="name"><a href="services_translations/">services\translations</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="base_page">
+  <span class="name"><a href="widgets_base_page/">widgets\base_page</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="channel_card">
+  <span class="name"><a href="widgets_channel_card/">widgets\channel_card</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="filter_chips_row">
+  <span class="name"><a href="widgets_filter_chips_row/">widgets\filter_chips_row</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="widgets">
+  <span class="name"><a href="widgets_widgets/">widgets\widgets</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">alls_monitor package</li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">alls_monitor</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="app/">app</a></li>
+      <li><a href="config_config/">config\config</a></li>
+      <li><a href="main/">main</a></li>
+      <li><a href="models_channel/">models\channel</a></li>
+      <li><a href="models_data_model/">models\data_model</a></li>
+      <li><a href="models_models/">models\models</a></li>
+      <li><a href="navigation_app_drawer/">navigation\app_drawer</a></li>
+      <li><a href="navigation_main_navigation/">navigation\main_navigation</a></li>
+      <li><a href="navigation_navigation/">navigation\navigation</a></li>
+      <li><a href="screens_dashboard_screen/">screens\dashboard_screen</a></li>
+      <li><a href="screens_meters_screen/">screens\meters_screen</a></li>
+      <li><a href="screens_raw_json_screen/">screens\raw_json_screen</a></li>
+      <li><a href="screens_screens/">screens\screens</a></li>
+      <li><a href="screens_settings_screen/">screens\settings_screen</a></li>
+      <li><a href="services_data_repository/">services\data_repository</a></li>
+      <li><a href="services_data_service/">services\data_service</a></li>
+      <li><a href="services_services/">services\services</a></li>
+      <li><a href="services_translations/">services\translations</a></li>
+      <li><a href="widgets_base_page/">widgets\base_page</a></li>
+      <li><a href="widgets_channel_card/">widgets\channel_card</a></li>
+      <li><a href="widgets_filter_chips_row/">widgets\filter_chips_row</a></li>
+      <li><a href="widgets_widgets/">widgets\widgets</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    alls_monitor
+      1.0.0+1
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
