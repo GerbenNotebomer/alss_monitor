@@ -3,6 +3,12 @@
 APK_DIR="apk"
 APP_RELEASE_APK="$APK_DIR/Alls_Monitor_APP.apk"
 APP_DEBUG_APK="build/app/outputs/flutter-apk/app-debug.apk"
+# Voeg bovenaan toe (bij voorkeur bij je variabelen):
+SERVER_DIR="docs"
+SERVER_PORT=8000
+SERVER_PID_FILE=".local_server_pid"
+SERVER_PID_FILE=".local_server_pid"
+
 
 # Kleuren voor mooier menu
 RED='\033[0;31m'
@@ -212,6 +218,75 @@ function upload_apk_to_sd() {
         echo -e "${RED}❌ Upload mislukt met HTTP statuscode: $response_code${NC}"
     fi
 }
+
+
+
+function start_local_server() {
+    if [ -f "$SERVER_PID_FILE" ]; then
+        pid=$(cat "$SERVER_PID_FILE")
+        if ps -p $pid > /dev/null 2>&1; then
+            echo -e "${YELLOW}Server draait al met PID $pid.${NC}"
+            return
+        else
+            echo -e "${YELLOW}Verouderd PID-bestand gevonden, verwijderen.${NC}"
+            rm "$SERVER_PID_FILE"
+        fi
+    fi
+
+    if [ ! -d "$SERVER_DIR" ]; then
+        echo -e "${RED}Map $SERVER_DIR bestaat niet! Server starten mislukt.${NC}"
+        return
+    fi
+
+    # Start server op achtergrond
+    echo -e "${BLUE}Start lokale server in $SERVER_DIR op poort $SERVER_PORT...${NC}"
+    (cd "$SERVER_DIR" && python3 -m http.server $SERVER_PORT > /dev/null 2>&1 &) 
+    pid=$!
+    echo $pid > "$SERVER_PID_FILE"
+    echo -e "${GREEN}Server gestart met PID $pid.${NC}"
+}
+
+function stop_local_server() {
+    if [ ! -f "$SERVER_PID_FILE" ]; then
+        echo -e "${RED}Server PID-bestand niet gevonden. Server draait waarschijnlijk niet.${NC}"
+        return
+    fi
+
+    pid=$(cat "$SERVER_PID_FILE")
+    if ps -p $pid > /dev/null 2>&1; then
+        kill $pid
+        rm "$SERVER_PID_FILE"
+        echo -e "${GREEN}Server (PID $pid) gestopt.${NC}"
+    else
+        echo -e "${YELLOW}Server met PID $pid draait niet. Verwijder PID-bestand.${NC}"
+        rm "$SERVER_PID_FILE"
+    fi
+}
+
+# Pas je menu() functie aan, voeg opties toe, bijvoorbeeld na optie 14:
+
+function menu() {
+    clear
+    header
+    echo -e "${YELLOW}1)${NC} Flutter clean"
+    echo -e "${YELLOW}2)${NC} Flutter pub get"
+    echo -e "${YELLOW}3)${NC} Build APK (release)"
+    echo -e "${YELLOW}4)${NC} Build APK (debug)"
+    echo -e "${YELLOW}5)${NC} Build APK (profile)"
+    echo -e "${YELLOW}6)${NC} Run app (debug mode, flutter run)"
+    echo -e "${YELLOW}7)${NC} Install APK (release)"
+    echo -e "${YELLOW}8)${NC} Install APK (debug)"
+    echo -e "${YELLOW}9)${NC} Uninstall app (package naam)"
+    echo -e "${YELLOW}10)${NC} Bekijk logs (filter flutter)"
+    echo -e "${YELLOW}11)${NC} Opschonen & minimaliseren (Android-only)"
+    echo -e "${YELLOW}12)${NC} Devices beheren (ADB)"
+    echo -e "${YELLOW}13)${NC} Committen en pushen naar GitHub"
+    echo -e "${YELLOW}14)${NC} Upload APK naar SD-kaart (via WiFi)"
+    echo -e "${YELLOW}15)${NC} Start lokale server (docs/, poort 8000)"
+    echo -e "${YELLOW}16)${NC} Stop lokale server"
+    echo -e "${YELLOW}0)${NC} Exit"
+    echo -ne "${CYAN}Maak je keuze: ${NC}"
+}
 function create_readme_and_push() {
   # 1. Genereer dart API docs
   echo "Dart docs genereren..."
@@ -373,27 +448,7 @@ EOF
   fi
 }
 
-
-function menu() {
-    clear
-    header
-    echo -e "${YELLOW}1)${NC} Flutter clean"
-    echo -e "${YELLOW}2)${NC} Flutter pub get"
-    echo -e "${YELLOW}3)${NC} Build APK (release)"
-    echo -e "${YELLOW}4)${NC} Build APK (debug)"
-    echo -e "${YELLOW}5)${NC} Build APK (profile)"
-    echo -e "${YELLOW}6)${NC} Run app (debug mode, flutter run)"
-    echo -e "${YELLOW}7)${NC} Install APK (release)"
-    echo -e "${YELLOW}8)${NC} Install APK (debug)"
-    echo -e "${YELLOW}9)${NC} Uninstall app (package naam)"
-    echo -e "${YELLOW}10)${NC} Bekijk logs (filter flutter)"
-    echo -e "${YELLOW}11)${NC} Opschonen & minimaliseren (Android-only)"
-    echo -e "${YELLOW}12)${NC} Devices beheren (ADB)"
-    echo -e "${YELLOW}13)${NC} Committen en pushen naar GitHub"
-    echo -e "${YELLOW}14)${NC} Upload APK naar SD-kaart (via WiFi)"
-    echo -e "${YELLOW}0)${NC} Exit"
-    echo -ne "${CYAN}Maak je keuze: ${NC}"
-}
+# Voeg in je while-loop deze cases toe:
 
 while true; do
     menu
@@ -413,7 +468,8 @@ while true; do
         12) devices_menu ;;
         13) create_readme_and_push; pause ;;
         14) upload_apk_to_sd; pause ;;
-
+        15) start_local_server; pause ;;
+        16) stop_local_server; pause ;;
         0) echo -e "${GREEN}Tot ziens!${NC}"; exit 0 ;;
         *) echo -e "${RED}Ongeldige keuze, probeer opnieuw.${NC}"; pause ;;
     esac
