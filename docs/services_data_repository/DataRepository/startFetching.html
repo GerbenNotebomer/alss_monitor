@@ -71,6 +71,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void startFetching() {
+  DebugLogger.log(&quot;DataRepository: Start fetching gestart&quot;);
   _fetchAndUpdateData();
   _timer = Timer.periodic(refreshInterval, (_) =&gt; _fetchAndUpdateData());
 }</code></pre>

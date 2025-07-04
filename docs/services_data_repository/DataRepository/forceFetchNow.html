@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the dispose method from the DebugLogger class, for the Dart programming language.">
-  <title>dispose method - DebugLogger class - debug_logger library - Dart API</title>
+  <meta name="description" content="API docs for the forceFetchNow method from the DataRepository class, for the Dart programming language.">
+  <title>forceFetchNow method - DataRepository class - data_repository library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">alls_monitor</a></li>
-    <li><a href="../../services_debug_logger/">services\debug_logger.dart</a></li>
-    <li><a href="../../services_debug_logger/DebugLogger-class.html">DebugLogger</a></li>
-    <li class="self-crumb">dispose static method</li>
+    <li><a href="../../services_data_repository/">services\data_repository.dart</a></li>
+    <li><a href="../../services_data_repository/DataRepository-class.html">DataRepository</a></li>
+    <li class="self-crumb">forceFetchNow method</li>
   </ol>
-  <div class="self-name">dispose</div>
+  <div class="self-name">forceFetchNow</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,32 +46,39 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="services_debug_logger&#47;DebugLogger-class-sidebar.html"
+    data-above-sidebar="services_data_repository&#47;DataRepository-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">dispose</span> static method 
+<h1><span class="kind-method">forceFetchNow</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">dispose</span>(<wbr>)
+<span class="name ">forceFetchNow</span>(<wbr>)
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Moet opgeroepen worden bij app afsluiten of pauze om logs weg te schrijven.</p>
+  <p>Forceer een directe fetch, bijvoorbeeld via een reconnect-knop.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static Future&lt;void&gt; dispose() async {
-  _flushTimer?.cancel();
-  await _flushLogs();
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; forceFetchNow() async {
+  DebugLogger.log(&quot;DataRepository: forceFetchNow() aangeroepen&quot;);
+  try {
+    await _fetchAndUpdateData();
+  } catch (e, stack) {
+    await DebugLogger.log(
+      &quot;DataRepository: Fout bij forceFetchNow(): $e\n$stack&quot;,
+    );
+    rethrow;
+  }
 }</code></pre>
 </section>
 
@@ -86,12 +93,12 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">alls_monitor</a></li>
-    <li><a href="../../services_debug_logger/">debug_logger</a></li>
-    <li><a href="../../services_debug_logger/DebugLogger-class.html">DebugLogger</a></li>
-    <li class="self-crumb">dispose static method</li>
+    <li><a href="../../services_data_repository/">data_repository</a></li>
+    <li><a href="../../services_data_repository/DataRepository-class.html">DataRepository</a></li>
+    <li class="self-crumb">forceFetchNow method</li>
 </ol>
 
-    <h5>DebugLogger class</h5>
+    <h5>DataRepository class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">

@@ -61,17 +61,39 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>🔄 fetchData - Nu met netwerkcontrole</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;DataModel&gt; fetchData() async {
-  for (final url in urls) {
+  if (!await _hasInternetConnection()) {
+    await DebugLogger.log(&#39;DataService: Geen internetverbinding.&#39;);
+    throw Exception(&#39;Geen internetverbinding.&#39;);
+  }
+
+  final now = DateTime.now();
+  if (_consecutiveFailures &gt;= maxFailuresBeforeBackoff &amp;&amp;
+      _lastFailureTime != null &amp;&amp;
+      now.difference(_lastFailureTime!) &lt; backoffDuration) {
+    final remaining = backoffDuration - now.difference(_lastFailureTime!);
+    await DebugLogger.log(
+      &#39;DataService: In backoff. Nog ${remaining.inSeconds} seconden wachten.&#39;,
+    );
+    throw Exception(&#39;DataService tijdelijk gepauzeerd na meerdere fouten&#39;);
+  }
+
+  final tryOrder = _buildTryOrder();
+
+  for (final url in tryOrder) {
     try {
       await DebugLogger.log(
         &#39;DataService: Proberen data op te halen van $url&#39;,
       );
+
       final response = await http
           .get(Uri.parse(url))
           .timeout(timeoutDuration);
@@ -80,6 +102,10 @@
         await DebugLogger.log(
           &#39;DataService: Data succesvol opgehaald van $url&#39;,
         );
+        _lastWorkingUrl = url;
+        _consecutiveFailures = 0;
+        _lastFailureTime = null;
+
         final jsonMap = json.decode(response.body) as Map&lt;String, dynamic&gt;;
         return DataModel.fromJson(jsonMap);
       } else {
@@ -91,10 +117,13 @@
       await DebugLogger.log(
         &#39;DataService: Fout bij ophalen van $url: $e\n$stack&#39;,
       );
-      &#47;&#47; probeer volgende url
     }
   }
-  final errorMsg = &quot;Fout bij ophalen data van alle URLs&quot;;
+
+  &#47;&#47; Alles gefaald
+  _consecutiveFailures++;
+  _lastFailureTime = DateTime.now();
+  const errorMsg = &quot;Fout bij ophalen data van alle URLs&quot;;
   await DebugLogger.log(&#39;DataService: $errorMsg&#39;);
   throw Exception(errorMsg);
 }</code></pre>

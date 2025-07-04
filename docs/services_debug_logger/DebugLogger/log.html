@@ -55,31 +55,34 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">log</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="log-param-message"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">message</span></span></li>
-</ol>)
+<span class="name ">log</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="log-param-message"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">message</span>, {</span></li>
+<li><span class="parameter" id="log-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">tag</span>, </span></li>
+</ol>})
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Voegt een logregel toe aan de buffer, zonder te wachten.</p>
+  <p>Logt een bericht met timestamp en optionele tag.</p>
+<p>Als geen <code>tag</code> is opgegeven, wordt de aanroepende functie bepaald via de stacktrace.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static Future&lt;void&gt; log(String message) async {
+  <pre class="language-dart"><code class="language-dart">static Future&lt;void&gt; log(String message, {String? tag}) async {
   try {
     final timestamp = DateTime.now().toIso8601String();
-    _logQueue.add(&#39;$timestamp: $message&#39;);
-    &#47;&#47; Probeer meteen te flushen als er niet al een write bezig is
+    final callerTag = tag ?? _getCaller();
+
+    _logQueue.add(&#39;$timestamp [$callerTag]: $message&#39;);
+
     if (!_isWriting) {
       _flushLogs();
     }
   } catch (e) {
-    &#47;&#47; Fout bij log toevoegen mag app niet breken
     print(&#39;DebugLogger log error: $e&#39;);
   }
 }</code></pre>

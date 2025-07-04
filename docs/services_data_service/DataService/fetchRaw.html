@@ -61,17 +61,41 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>🔄 fetchRaw - Nu met netwerkcontrole</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; fetchRaw() async {
-  for (final url in urls) {
+  if (!await _hasInternetConnection()) {
+    await DebugLogger.log(
+      &#39;DataService: Geen internetverbinding (raw fetch).&#39;,
+    );
+    throw Exception(&#39;Geen internetverbinding.&#39;);
+  }
+
+  final now = DateTime.now();
+  if (_consecutiveFailures &gt;= maxFailuresBeforeBackoff &amp;&amp;
+      _lastFailureTime != null &amp;&amp;
+      now.difference(_lastFailureTime!) &lt; backoffDuration) {
+    final remaining = backoffDuration - now.difference(_lastFailureTime!);
+    await DebugLogger.log(
+      &#39;DataService: In backoff (raw). Nog ${remaining.inSeconds} seconden wachten.&#39;,
+    );
+    throw Exception(&#39;DataService tijdelijk gepauzeerd na meerdere fouten&#39;);
+  }
+
+  final tryOrder = _buildTryOrder();
+
+  for (final url in tryOrder) {
     try {
       await DebugLogger.log(
         &#39;DataService: Proberen raw JSON op te halen van $url&#39;,
       );
+
       final response = await http
           .get(Uri.parse(url))
           .timeout(timeoutDuration);
@@ -80,6 +104,10 @@
         await DebugLogger.log(
           &#39;DataService: Raw JSON succesvol opgehaald van $url&#39;,
         );
+        _lastWorkingUrl = url;
+        _consecutiveFailures = 0;
+        _lastFailureTime = null;
+
         return response.body;
       } else {
         await DebugLogger.log(
@@ -90,10 +118,13 @@
       await DebugLogger.log(
         &#39;DataService: Fout bij ophalen raw JSON van $url: $e\n$stack&#39;,
       );
-      &#47;&#47; probeer volgende url
     }
   }
-  final errorMsg = &quot;Fout bij ophalen raw JSON van alle URLs&quot;;
+
+  &#47;&#47; Alles gefaald
+  _consecutiveFailures++;
+  _lastFailureTime = DateTime.now();
+  const errorMsg = &quot;Fout bij ophalen raw JSON van alle URLs&quot;;
   await DebugLogger.log(&#39;DataService: $errorMsg&#39;);
   throw Exception(errorMsg);
 }</code></pre>

@@ -138,17 +138,22 @@ Widget build(BuildContext context) {
           selected: selectedIndex == 2,
           onTap: () =&gt; onItemTapped(2),
         ),
-
-        &#47;&#47;&#47; ✅ Nieuw debug-item
+        if (onReconnect != null)
+          ListTile(
+            leading: const Icon(Icons.sync),
+            title: const Text(&#39;Opnieuw verbinden&#39;),
+            onTap: () {
+              Navigator.of(context).pop(); &#47;&#47; Drawer sluiten
+              onReconnect?.call(); &#47;&#47; ✅ Veilig aanroepen
+            },
+          ),
         ListTile(
           leading: const Icon(Icons.bug_report),
-          title: const Text(&#39;Debug&#39;),
+          title: Text(Translations.t(&#39;nav.debuglog&#39;)),
           selected: selectedIndex == 3,
           onTap: () =&gt; onItemTapped(3),
         ),
-
         const Divider(),
-
         ListTile(
           leading: const Icon(Icons.settings),
           title: Text(Translations.t(&#39;nav.settings&#39;)),
@@ -174,7 +179,7 @@ Widget build(BuildContext context) {
                     child: Text(
                       Translations.getLanguageDisplayName(langCode),
                     ),
-                    onPressed: () =&gt; Navigator.pop(context, langCode),
+                    onPressed: () =&gt; Navigator.of(context).pop(langCode),
                   );
                 }).toList(),
               ),
@@ -184,6 +189,14 @@ Widget build(BuildContext context) {
               await onChangeLanguage(selectedLang);
               Navigator.of(context).pop(); &#47;&#47; Sluit drawer na taalwissel
             }
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.exit_to_app),
+          title: const Text(&#39;Afsluiten&#39;),
+          onTap: () {
+            Navigator.of(context).pop(); &#47;&#47; Drawer sluiten
+            SystemNavigator.pop(); &#47;&#47; App afsluiten
           },
         ),
       ],

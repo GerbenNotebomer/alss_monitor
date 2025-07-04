@@ -61,6 +61,7 @@
 <li><span class="parameter" id="-param-selectedIndex"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">selectedIndex</span>, </span></li>
 <li><span class="parameter" id="-param-onItemTapped"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/ValueChanged.html">ValueChanged</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span> <span class="parameter-name">onItemTapped</span>, </span></li>
 <li><span class="parameter" id="-param-onOpenSettings"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">onOpenSettings</span>, </span></li>
+<li><span class="parameter" id="-param-onReconnect"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a>?</span> <span class="parameter-name">onReconnect</span>, </span></li>
 </ol>})
     </section>
     
@@ -76,6 +77,7 @@
   required this.selectedIndex,
   required this.onItemTapped,
   required this.onOpenSettings,
+  this.onReconnect, &#47;&#47; ✅ Optioneel, voorkomt build errors als vergeten
 }) : super(key: key);</code></pre>
 </section>
 
